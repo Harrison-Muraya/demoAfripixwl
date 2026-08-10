@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { IndustryCard } from "@/components/IndustryCard";
 import { industries, demosFor } from "@/data/demos";
 
 export const Route = createFileRoute("/industries/")({
@@ -31,33 +31,15 @@ function IndustriesPage() {
           yours.
         </p>
       </div>
-      <div className="mt-12 grid gap-x-10 border-t border-border sm:grid-cols-2">
-        {industries.map((industry, i) => {
-          const count = demosFor(industry.slug).length;
-          return (
-            <Link
-              key={industry.slug}
-              to="/industries/$slug"
-              params={{ slug: industry.slug }}
-              className={`group flex items-start justify-between gap-6 border-b border-border py-6 ${i % 2 === 0 ? "sm:border-r sm:pr-10" : "sm:pl-10"}`}
-            >
-              <div>
-                <h2 className="text-lg font-semibold transition-colors group-hover:text-primary">
-                  {industry.name}
-                </h2>
-                <p className="mt-1.5 max-w-md text-sm leading-relaxed text-muted-foreground">
-                  {industry.description}
-                </p>
-              </div>
-              <div className="mt-1 flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
-                <span>
-                  {count} project{count > 1 ? "s" : ""}
-                </span>
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-primary" />
-              </div>
-            </Link>
-          );
-        })}
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {industries.map((industry, i) => (
+          <IndustryCard
+            key={industry.slug}
+            industry={industry}
+            index={i}
+            count={demosFor(industry.slug).length}
+          />
+        ))}
       </div>
     </div>
   );

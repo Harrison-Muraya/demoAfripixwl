@@ -1,15 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
 import { BrowserFrame } from "@/components/BrowserFrame";
+import { IndustryCard } from "@/components/IndustryCard";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { industries, demos, featuredDemos } from "@/data/demos";
+import { industries, demos, demosFor, featuredDemos } from "@/data/demos";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -207,24 +208,14 @@ function Index() {
             find out.
           </p>
 
-          <div className="mt-12 grid gap-x-10 border-t border-border sm:grid-cols-2">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry, i) => (
-              <Link
+              <IndustryCard
                 key={industry.slug}
-                to="/industries/$slug"
-                params={{ slug: industry.slug }}
-                className={`group flex items-start justify-between gap-6 border-b border-border py-6 ${i % 2 === 0 ? "sm:border-r sm:pr-10" : "sm:pl-10"}`}
-              >
-                <div>
-                  <h3 className="text-lg font-semibold transition-colors group-hover:text-primary">
-                    {industry.name}
-                  </h3>
-                  <p className="mt-1.5 max-w-md text-sm leading-relaxed text-muted-foreground">
-                    {industry.description}
-                  </p>
-                </div>
-                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-              </Link>
+                industry={industry}
+                index={i}
+                count={demosFor(industry.slug).length}
+              />
             ))}
           </div>
         </div>
