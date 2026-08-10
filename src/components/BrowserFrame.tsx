@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Monitor, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +12,12 @@ type Props = {
   /** Show a Desktop/Mobile toggle. Loads as desktop by default. */
   deviceToggle?: boolean;
 };
+
+// A real desktop layout width to force the embedded page to render at,
+// regardless of how narrow the card itself is. We then scale it down
+// visually so it fits — the page never sees a "mobile" viewport.
+const DESKTOP_WIDTH = 1440;
+const MOBILE_WIDTH = 375;
 
 /**
  * Renders a demo site inside a plain browser chrome — real address bar,
@@ -29,6 +35,22 @@ export function BrowserFrame({
 }: Props) {
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const isMobile = deviceToggle && device === "mobile";
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const update = () => {
+      const width = el.clientWidth;
+      if (width > 0) setScale(width / DESKTOP_WIDTH);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={cn("card-surface overflow-hidden", className)}>
@@ -73,20 +95,35 @@ export function BrowserFrame({
         )}
       </div>
       <div
-        className={cn("bg-background", isMobile && "flex justify-center overflow-auto py-4")}
+        ref={wrapperRef}
+        className={cn(
+          "relative overflow-hidden bg-background",
+          isMobile && "flex justify-center overflow-auto py-4",
+        )}
         style={{ height }}
       >
-        <iframe
-          src={src}
-          title={title}
-          loading="lazy"
-          className={cn(
-            "border-0 transition-[width] duration-300",
-            isMobile
-              ? "h-full w-[375px] shrink-0 rounded-md border border-border"
-              : "h-full w-full",
-          )}
-        />
+        {isMobile ? (
+          <iframe
+            src={src}
+            title={title}
+            loading="lazy"
+            className="h-full shrink-0 rounded-md border border-border"
+            style={{ width: MOBILE_WIDTH }}
+          />
+        ) : (
+          <iframe
+            src={src}
+            title={title}
+            loading="lazy"
+            className="absolute top-0 left-0 border-0"
+            style={{
+              width: DESKTOP_WIDTH,
+              height: `calc(100% / ${scale || 1})`,
+              transform: `scale(${scale || 1})`,
+              transformOrigin: "top left",
+            }}
+          />
+        )}
       </div>
       {footer}
     </div>
