@@ -37,9 +37,12 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 justify-self-end">
+          <Button variant="outline" size="sm" className="hidden sm:inline-flex" asChild>
+            <Link to="/demonstrations">Explore Demos</Link>
+          </Button>
           <RequestDialog>
             <Button variant="hero" size="sm" className="hidden sm:inline-flex">
-              Request a Demo
+              Start Your Project
             </Button>
           </RequestDialog>
           <button
@@ -72,7 +75,7 @@ export function Navbar() {
             ))}
             <RequestDialog>
               <Button variant="hero" className="mt-2 w-full">
-                Request a Demo
+                Start Your Project
               </Button>
             </RequestDialog>
           </nav>
