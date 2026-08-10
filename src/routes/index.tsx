@@ -178,7 +178,7 @@ function Index() {
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Explore professionally designed websites and digital platforms built for real business
-              needs — then interact with the live demonstrations before starting your own.
+              needs — Interact with the live demonstrations before starting your own.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button variant="hero" size="xl" asChild>
@@ -242,8 +242,7 @@ function Index() {
           <div className="max-w-2xl">
             <h2 className="text-3xl font-semibold sm:text-4xl">Find a Website for Your Industry</h2>
             <p className="mt-4 text-muted-foreground">
-              A real-estate company doesn&apos;t need to see a school website — they need to see
-              what we can build for a business like theirs. Select your industry to find out.
+            Select your industry to find out.
             </p>
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
