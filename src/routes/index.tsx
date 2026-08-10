@@ -170,7 +170,7 @@ function Index() {
               conversion
             </p>
 
-            <dl className="mt-12 grid max-w-md grid-cols-3 divide-x divide-border border-t border-border pt-6">
+            <dl className="hidden mt-12 grid max-w-md grid-cols-3 divide-x divide-border border-t border-border pt-6">
               <div className="pr-4">
                 <dt className="text-2xl font-semibold font-display">{demos.length}+</dt>
                 <dd className="mt-1 text-xs text-muted-foreground">Live demonstrations</dd>
@@ -208,8 +208,7 @@ function Index() {
             See what works for businesses like yours — not just any website.
           </h2>
           <p className="mt-4 max-w-2xl text-muted-foreground">
-            They need to see what we can build for a business like theirs. Choose your industry to
-            find out.
+            Choose your industry to find out.
           </p>
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
