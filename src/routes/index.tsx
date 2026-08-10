@@ -165,6 +165,10 @@ function Index() {
                 </Button>
               </RequestDialog>
             </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              {demos.length}+ live demonstrations • {industries.length}+ industries • Designed for
+              conversion
+            </p>
 
             <dl className="mt-12 grid max-w-md grid-cols-3 divide-x divide-border border-t border-border pt-6">
               <div className="pr-4">
@@ -201,7 +205,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <span className="eyebrow">Find a website for your industry</span>
           <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
-            A real-estate company doesn&apos;t need to see a school website.
+            See what works for businesses like yours — not just any website.
           </h2>
           <p className="mt-4 max-w-2xl text-muted-foreground">
             They need to see what we can build for a business like theirs. Choose your industry to
@@ -241,6 +245,7 @@ function Index() {
                   src={demo.demoUrl}
                   title={demo.name}
                   height="16rem"
+                  deviceToggle
                 />
                 <div className="mt-4 flex items-start justify-between gap-4">
                   <div>
