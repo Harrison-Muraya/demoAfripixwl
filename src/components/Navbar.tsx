@@ -28,8 +28,8 @@ export function Navbar() {
               key={l.to}
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
-              activeProps={{ className: "text-accent" }}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              activeProps={{ className: "text-accent font-semibold after:scale-x-100" }}
+              className="relative py-1 text-sm font-medium text-muted-foreground transition-colors after:absolute after:-bottom-[3px] after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-[image:var(--gradient-brand)] after:transition-transform after:duration-300 hover:text-foreground"
             >
               {l.label}
             </Link>
@@ -49,7 +49,6 @@ export function Navbar() {
             onClick={() => setOpen((o) => !o)}
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-
           </button>
         </div>
       </div>
@@ -63,8 +62,10 @@ export function Navbar() {
                 to={l.to}
                 onClick={() => setOpen(false)}
                 activeOptions={{ exact: l.to === "/" }}
-                activeProps={{ className: "text-accent" }}
-                className="rounded-md px-2 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                activeProps={{
+                  className: "bg-secondary text-accent font-semibold border-l-2 border-accent",
+                }}
+                className="rounded-md border-l-2 border-transparent px-2 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 {l.label}
               </Link>
