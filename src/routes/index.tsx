@@ -151,7 +151,7 @@ function Index() {
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Explore professionally designed websites and digital platforms built for real business
-              needs — Interact with the live demonstrations before starting your own.
+              needs — interact with the live demonstrations before starting your own.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button variant="hero" size="xl" asChild>
