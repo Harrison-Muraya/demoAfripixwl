@@ -1,26 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Check,
-  Sparkles,
-  MonitorPlay,
-  Globe,
-  ShoppingCart,
-  CalendarCheck,
-  LayoutDashboard,
-  Building2,
-  Code2,
-  Smartphone,
-  Target,
-  Search,
-  MessageCircle,
-  Zap,
-  BarChart3,
-  CreditCard,
-  FileEdit,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
+import { BrowserFrame } from "@/components/BrowserFrame";
 import {
   Accordion,
   AccordionContent,
@@ -54,46 +36,40 @@ export const Route = createFileRoute("/")({
 
 const capabilities = [
   {
-    icon: Globe,
     title: "Business Websites",
     body: "Build credibility and generate enquiries with a professional online presence.",
   },
   {
-    icon: ShoppingCart,
     title: "E-commerce Websites",
     body: "Turn your website into a 24/7 sales channel customers can buy from anytime.",
   },
   {
-    icon: CalendarCheck,
     title: "Booking & Reservation Systems",
     body: "Let customers book appointments, rooms or services without calling.",
   },
   {
-    icon: LayoutDashboard,
     title: "Business Management Systems",
     body: "Digitise processes, manage records and reduce manual work.",
   },
   {
-    icon: Building2,
     title: "Real Estate Platforms",
     body: "Showcase properties and capture qualified leads with listing-ready pages.",
   },
   {
-    icon: Code2,
     title: "Custom Web Applications",
     body: "Build the exact digital solution your business needs, from the ground up.",
   },
 ];
 
 const principles = [
-  { icon: Smartphone, label: "Mobile-first design" },
-  { icon: Target, label: "Conversion-focused layouts" },
-  { icon: Search, label: "SEO-ready structure" },
-  { icon: MessageCircle, label: "WhatsApp & lead integration" },
-  { icon: Zap, label: "Fast-loading experiences" },
-  { icon: BarChart3, label: "Analytics & tracking" },
-  { icon: CreditCard, label: "Payment integrations" },
-  { icon: FileEdit, label: "Easy content management" },
+  "Mobile-first design",
+  "Conversion-focused layouts",
+  "SEO-ready structure",
+  "WhatsApp & lead integration",
+  "Fast-loading experiences",
+  "Analytics & tracking",
+  "Payment integrations",
+  "Easy content management",
 ];
 
 const process = [
@@ -164,19 +140,15 @@ const faqs = [
 function Index() {
   return (
     <>
-      {/* 1. Hero — sell the outcome, not the portfolio */}
-      <section className="hero-gradient relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-28 lg:px-8">
+      {/* 1. Hero */}
+      <section className="hero-gradient relative border-b border-border">
+        <div className="mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1fr] lg:items-center lg:py-28 lg:px-8">
           <div className="reveal">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-              <Sparkles className="h-3.5 w-3.5 text-accent" />
-              Don&apos;t just imagine it. Experience it.
-            </span>
-            <h1 className="mt-6 text-4xl leading-[1.08] font-semibold sm:text-5xl lg:text-6xl">
-              See What Your <span className="brand-gradient-text">Business</span> Could Look Like
-              Online
+            <span className="eyebrow">Afripixel Demo Centre</span>
+            <h1 className="mt-5 text-4xl leading-[1.08] font-semibold sm:text-5xl lg:text-[3.4rem]">
+              See what your <span className="text-primary">business</span> could look like online.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Explore professionally designed websites and digital platforms built for real business
               needs — then interact with the live demonstrations before starting your own.
             </p>
@@ -192,138 +164,138 @@ function Index() {
                 </Button>
               </RequestDialog>
             </div>
-            <p className="mt-8 text-sm text-muted-foreground">
-              {demos.length}+ live demonstrations · {industries.length}+ industries · Designed for
-              conversion
-            </p>
+
+            <dl className="mt-12 grid max-w-md grid-cols-3 divide-x divide-border border-t border-border pt-6">
+              <div className="pr-4">
+                <dt className="text-2xl font-semibold font-display">{demos.length}+</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Live demonstrations</dd>
+              </div>
+              <div className="px-4">
+                <dt className="text-2xl font-semibold font-display">{industries.length}+</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Industries served</dd>
+              </div>
+              <div className="pl-4">
+                <dt className="text-2xl font-semibold font-display">100%</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Real, interactive builds</dd>
+              </div>
+            </dl>
           </div>
 
-          {/* Floating preview cards */}
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <div className="card-surface float-slow relative z-10 p-5">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-accent/50" />
-                <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                <span className="ml-3 truncate text-xs text-muted-foreground">
-                  powel.afripixelprojects.com
-                </span>
-              </div>
-
-              <div className="mt-4 overflow-hidden rounded-lg border border-border">
-                <div className="h-[400px] bg-background">
-                  <iframe
-                    src="https://powel.afripixelprojects.com"
-                    title="Powel-elss Enterprises website preview"
-                    className="h-full w-full border-0"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              className="card-surface absolute -bottom-8 -left-4 z-20 hidden w-52 p-4 sm:block"
-              style={{ animationDelay: "1.5s" }}
-            >
-              <MonitorPlay className="h-5 w-5 text-accent" />
-              <p className="mt-2 text-sm font-semibold">Live project preview</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Scroll, click and explore the real site.
+          <BrowserFrame
+            url="powel.afripixelprojects.com"
+            src="https://powel.afripixelprojects.com"
+            title="Powel-elss Enterprises website preview"
+            height="26rem"
+            footer={
+              <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
+                A live client project — scroll and click through it exactly as their customers do.
               </p>
-            </div>
-            <div className="absolute -top-10 -right-10 -z-0 h-48 w-48 rounded-full bg-[image:var(--gradient-brand)] opacity-10 blur-3xl" />
-          </div>
+            }
+          />
         </div>
       </section>
 
-      {/* 2. Industry selector */}
-      <section className="border-t border-border bg-card">
+      {/* 2. Industry selector — a directory, not a card grid */}
+      <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">Find a Website for Your Industry</h2>
-            <p className="mt-4 text-muted-foreground">
-              A real-estate company doesn&apos;t need to see a school website — they need to see
-              what we can build for a business like theirs. Select your industry to find out.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {industries.map((industry) => (
+          <span className="eyebrow">Find a website for your industry</span>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
+            A real-estate company doesn&apos;t need to see a school website.
+          </h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            They need to see what we can build for a business like theirs. Choose your industry to
+            find out.
+          </p>
+
+          <div className="mt-12 grid gap-x-10 border-t border-border sm:grid-cols-2">
+            {industries.map((industry, i) => (
               <Link
                 key={industry.slug}
                 to="/industries/$slug"
                 params={{ slug: industry.slug }}
-                className="card-surface group flex flex-col p-6"
+                className={`group flex items-start justify-between gap-6 border-b border-border py-6 ${i % 2 === 0 ? "sm:border-r sm:pr-10" : "sm:pl-10"}`}
               >
-                <span className="h-1.5 w-10 rounded-full bg-[image:var(--gradient-brand)]" />
-                <h3 className="mt-5 text-lg font-semibold">{industry.name}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {industry.description}
-                </p>
-                <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-accent">
-                  View Industry Demos
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
+                <div>
+                  <h3 className="text-lg font-semibold transition-colors group-hover:text-primary">
+                    {industry.name}
+                  </h3>
+                  <p className="mt-1.5 max-w-md text-sm leading-relaxed text-muted-foreground">
+                    {industry.description}
+                  </p>
+                </div>
+                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Featured demos — strongest sales section */}
-      <section className="border-t border-border bg-secondary/40">
+      {/* 3. Featured projects — the signature browser-frame proof, repeated deliberately */}
+      <section className="border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">Featured Projects</h2>
-            <p className="mt-4 text-muted-foreground">
-              A few of our strongest projects — each one solving a real business problem, not just a
-              design exercise.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <span className="eyebrow">Featured projects</span>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
+            A few of our strongest projects.
+          </h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            Each one solving a real business problem — not just a design exercise. These are live
+            sites, not screenshots.
+          </p>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
             {featuredDemos().map((demo) => (
-              <div key={demo.slug} className="card-surface flex flex-col p-6">
-                <span className="text-xs font-semibold tracking-wide text-accent uppercase">
-                  {demo.industry}
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">{demo.name}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {demo.description}
-                </p>
-                <Button variant="outline" className="mt-5 w-full" asChild>
-                  <Link to="/demo/$slug" params={{ slug: demo.slug }}>
-                    View Live Demo
+              <div key={demo.slug}>
+                <BrowserFrame
+                  url={demo.demoUrl.replace(/^https?:\/\//, "")}
+                  src={demo.demoUrl}
+                  title={demo.name}
+                  height="16rem"
+                />
+                <div className="mt-4 flex items-start justify-between gap-4">
+                  <div>
+                    <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                      {demo.industry}
+                    </span>
+                    <h3 className="mt-1 text-lg font-semibold">{demo.name}</h3>
+                    <p className="mt-1 max-w-md text-sm leading-relaxed text-muted-foreground">
+                      {demo.description}
+                    </p>
+                  </div>
+                  <Link
+                    to="/demo/$slug"
+                    params={{ slug: demo.slug }}
+                    className="mt-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                  >
+                    View demo <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                </Button>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. What can we build for you? */}
-      <section className="border-t border-border">
+      {/* 4. What can we build for you — a spec sheet, not an icon grid */}
+      <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <span className="text-xs font-semibold tracking-wide text-accent uppercase">
-              More Than Just a Website
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">What Can We Build For You?</h2>
-            <p className="mt-4 text-muted-foreground">
-              The demos are proof of what&apos;s possible — here&apos;s the full range of digital
-              solutions behind them.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <span className="eyebrow">More than just a website</span>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
+            What can we build for you?
+          </h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            The demos are proof of what&apos;s possible — here&apos;s the full range of digital
+            solutions behind them.
+          </p>
+
+          <div className="mt-12 grid border-t border-l border-border sm:grid-cols-2 lg:grid-cols-3">
             {capabilities.map((c) => (
-              <div key={c.title} className="card-surface p-6">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[image:var(--gradient-brand)]">
-                  <c.icon className="h-5 w-5 text-white" />
-                </div>
-                <h3 className="mt-5 text-lg font-semibold">{c.title}</h3>
+              <div key={c.title} className="border-r border-b border-border p-7">
+                <h3 className="text-base font-semibold">{c.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
               </div>
             ))}
           </div>
+
           <div className="mt-10">
             <Button variant="hero" size="lg" asChild>
               <Link to="/industries">Find Your Solution</Link>
@@ -333,81 +305,94 @@ function Index() {
       </section>
 
       {/* 5. Why these websites are different */}
-      <section className="border-t border-border bg-card">
+      <section className="border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">
-              We Don&apos;t Build Websites Just to Look Good.
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              We build them to help businesses{" "}
-              <span className="font-semibold text-foreground">
-                Attract → Engage → Convert → Grow.
-              </span>{" "}
-              That&apos;s a different proposition from a freelancer who just builds beautiful
-              websites — we build websites that work as marketing assets.
-            </p>
+          <span className="eyebrow">Our philosophy</span>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
+            We don&apos;t build websites just to look good.
+          </h2>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            We build them to help businesses work as marketing assets — not just brochures. That's a
+            different proposition from a freelancer whose pitch is simply "I build beautiful
+            websites."
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-display text-xl font-semibold sm:text-2xl">
+            <span>Attract</span>
+            <ArrowRight className="h-5 w-5 text-primary" />
+            <span>Engage</span>
+            <ArrowRight className="h-5 w-5 text-primary" />
+            <span>Convert</span>
+            <ArrowRight className="h-5 w-5 text-primary" />
+            <span>Grow</span>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+          <ul className="mt-12 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
             {principles.map((p) => (
-              <div key={p.label} className="card-surface flex items-center gap-3 p-5">
-                <p.icon className="h-5 w-5 shrink-0 text-accent" />
-                <span className="text-sm font-medium">{p.label}</span>
-              </div>
+              <li key={p} className="flex items-start gap-2.5 text-sm font-medium">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                {p}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
       {/* 6. Social proof / credibility */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">
-              Trusted to Build Digital Experiences
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Digital marketing and development under one roof — so your website isn&apos;t just
-              built well, it&apos;s built to be found and to convert.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-3">
-            <div className="card-surface p-8 text-center">
-              <p className="brand-gradient-text text-4xl font-semibold">{demos.length}+</p>
-              <p className="mt-2 text-sm text-muted-foreground">Live projects in the Demo Centre</p>
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+            <div>
+              <span className="eyebrow">Trusted to build digital experiences</span>
+              <p className="mt-4 max-w-xl text-muted-foreground">
+                Digital marketing and development under one roof — so your website isn&apos;t just
+                built well, it&apos;s built to be found and to convert.
+              </p>
             </div>
-            <div className="card-surface p-8 text-center">
-              <p className="brand-gradient-text text-4xl font-semibold">{industries.length}+</p>
-              <p className="mt-2 text-sm text-muted-foreground">Industries served</p>
-            </div>
-            <div className="card-surface p-8 text-center">
-              <p className="brand-gradient-text text-4xl font-semibold">100%</p>
-              <p className="mt-2 text-sm text-muted-foreground">Real, interactive demonstrations</p>
-            </div>
+            <dl className="grid grid-cols-3 divide-x divide-border">
+              <div className="px-4 first:pl-0">
+                <dt className="text-3xl font-semibold font-display">{demos.length}+</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Live projects</dd>
+              </div>
+              <div className="px-4">
+                <dt className="text-3xl font-semibold font-display">{industries.length}+</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Industries</dd>
+              </div>
+              <div className="px-4">
+                <dt className="text-3xl font-semibold font-display">100%</dt>
+                <dd className="mt-1 text-xs text-muted-foreground">Interactive demos</dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      {/* 7. How it works — from idea to launch */}
-      <section className="border-t border-border bg-secondary/40">
+      {/* 7. How it works — from idea to launch (a real sequence) */}
+      <section className="border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">From Idea to Launch</h2>
-            <p className="mt-4 text-muted-foreground">
-              A simple, transparent process — so there&apos;s no uncertainty around how a project
-              with us works.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-4">
-            {process.map((s) => (
-              <div key={s.no} className="card-surface p-7">
-                <span className="brand-gradient-text text-3xl font-semibold">{s.no}</span>
-                <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+          <span className="eyebrow">From idea to launch</span>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold sm:text-4xl">
+            A simple, transparent process.
+          </h2>
+
+          <div className="mt-14 grid gap-x-8 gap-y-10 lg:grid-cols-4">
+            {process.map((s, i) => (
+              <div key={s.no} className="relative">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary/30 font-display text-sm font-semibold text-primary">
+                    {s.no}
+                  </span>
+                  {i < process.length - 1 ? (
+                    <span className="hidden h-px flex-1 bg-border lg:block" />
+                  ) : null}
+                </div>
+                <h3 className="mt-4 text-base font-semibold">{s.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
               </div>
             ))}
           </div>
-          <div className="mt-10">
+
+          <div className="mt-12">
             <RequestDialog>
               <Button variant="hero" size="lg">
                 Start Your Project
@@ -418,85 +403,82 @@ function Index() {
       </section>
 
       {/* 8. Full demo centre teaser */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="card-surface flex flex-col items-start gap-6 p-10 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold sm:text-3xl">Explore All Our Demos</h2>
-              <p className="mt-3 max-w-xl text-muted-foreground">
-                Browse all {demos.length}+ live projects across every industry we&apos;ve worked in,
-                filterable by category.
-              </p>
-            </div>
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/demonstrations">
-                View the Full Demo Centre <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+      <section className="border-b border-border">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <div>
+            <h2 className="text-2xl font-semibold">Explore all our demos</h2>
+            <p className="mt-2 max-w-xl text-muted-foreground">
+              Browse all {demos.length}+ live projects across every industry we&apos;ve worked in,
+              filterable by category.
+            </p>
           </div>
+          <Button variant="outline" size="xl" asChild>
+            <Link to="/demonstrations">
+              View the Full Demo Centre <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </section>
 
       {/* 9. Business assessment / lead magnet */}
-      <section className="border-t border-border bg-card">
+      <section className="border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
-              <h2 className="text-3xl font-semibold sm:text-4xl">
-                Not Sure What Your Business Needs?
+              <span className="eyebrow">Not sure what your business needs?</span>
+              <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
+                Get a free digital assessment.
               </h2>
-              <p className="mt-4 text-muted-foreground">
-                Get a quick assessment of your current digital presence and discover:
-              </p>
-              <ul className="mt-6 space-y-3">
+              <p className="mt-4 text-muted-foreground">Discover:</p>
+              <ul className="mt-5 space-y-3">
                 {assessmentBenefits.map((b) => (
-                  <li key={b} className="flex items-center gap-3 text-sm font-medium">
-                    <Check className="h-4 w-4 shrink-0 text-accent" />
+                  <li key={b} className="flex items-center gap-2.5 text-sm font-medium">
+                    <Check className="h-4 w-4 shrink-0 text-primary" />
                     {b}
                   </li>
                 ))}
               </ul>
-              <Button variant="accent" size="xl" className="mt-8" asChild>
+              <Button variant="hero" size="xl" className="mt-8" asChild>
                 <Link to="/assessment">Get My Free Business Assessment</Link>
               </Button>
             </div>
-            <div className="card-surface p-8">
-              <h3 className="text-xl font-semibold">Before</h3>
-              <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
-                <li>Outdated website</li>
-                <li>Manual processes</li>
-                <li>Poor online presence</li>
-                <li>Difficult customer communication</li>
-              </ul>
-              <div className="my-6 h-px bg-border" />
-              <h3 className="text-xl font-semibold">After</h3>
-              <ul className="mt-6 space-y-3 text-sm">
-                {[
-                  "Modern digital presence",
-                  "Better customer experience",
-                  "Professional branding",
-                  "Scalable digital solution",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <Check className="h-4 w-4 shrink-0 text-accent" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+
+            <div className="grid grid-cols-2 divide-x divide-border border border-border">
+              <div className="p-6">
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase">Before</h3>
+                <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                  <li>Outdated website</li>
+                  <li>Manual processes</li>
+                  <li>Poor online presence</li>
+                  <li>Difficult customer communication</li>
+                </ul>
+              </div>
+              <div className="p-6">
+                <h3 className="text-sm font-semibold text-primary uppercase">After</h3>
+                <ul className="mt-4 space-y-2.5 text-sm">
+                  {[
+                    "Modern digital presence",
+                    "Better customer experience",
+                    "Professional branding",
+                    "Scalable digital solution",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <Check className="h-3.5 w-3.5 shrink-0 text-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 10. FAQ */}
-      <section className="border-t border-border">
+      <section className="border-b border-border">
         <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-muted-foreground">
-              Answers to the questions that come up most before starting a project.
-            </p>
-          </div>
+          <span className="eyebrow">Questions</span>
+          <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Frequently asked questions</h2>
           <Accordion type="single" collapsible className="mt-10">
             {faqs.map((f) => (
               <AccordionItem key={f.q} value={f.q}>
@@ -509,10 +491,10 @@ function Index() {
       </section>
 
       {/* 11. Final conversion section */}
-      <section className="hero-gradient border-t border-border">
-        <div className="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6">
+      <section className="hero-gradient">
+        <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
           <h2 className="text-3xl font-semibold sm:text-4xl">
-            Your Business Deserves More Than a Website.
+            Your business deserves more than a website.
           </h2>
           <p className="mt-4 text-muted-foreground">
             Let&apos;s build a digital experience that helps your business attract customers,

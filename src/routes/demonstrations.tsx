@@ -3,7 +3,6 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { industries, demos } from "@/data/demos";
-import noBgPattern from "@/assets/no-bg-pattern.png";
 
 export const Route = createFileRoute("/demonstrations")({
   head: () => ({
@@ -42,15 +41,6 @@ function DemonstrationsPage() {
   return (
     <div className="relative mx-auto max-full px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.13] sm:opacity-[0.15]"
-          style={{
-            backgroundImage: `url(${noBgPattern})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%",
-            backgroundPosition: "center",
-          }}
-        />
         <div className="max-w-2xl">
           <h1 className="text-3xl font-semibold sm:text-4xl">Our Demonstrations</h1>
           <p className="mt-4 text-muted-foreground">
@@ -108,7 +98,8 @@ function DemonstrationsPage() {
         {totalPages > 1 ? (
           <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3">
             <p className="text-sm text-muted-foreground">
-              Showing {startIndex + 1}-{Math.min(startIndex + pageSize, list.length)} of {list.length}
+              Showing {startIndex + 1}-{Math.min(startIndex + pageSize, list.length)} of{" "}
+              {list.length}
             </p>
             <div className="flex items-center gap-2">
               <button
