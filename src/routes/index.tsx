@@ -1,20 +1,47 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ArrowDown, Check, X, Sparkles, MonitorPlay } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Sparkles,
+  MonitorPlay,
+  Globe,
+  ShoppingCart,
+  CalendarCheck,
+  LayoutDashboard,
+  Building2,
+  Code2,
+  Smartphone,
+  Target,
+  Search,
+  MessageCircle,
+  Zap,
+  BarChart3,
+  CreditCard,
+  FileEdit,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
-import { industries, featuredDemos } from "@/data/demos";
-import { url } from "node:inspector";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { industries, demos, featuredDemos } from "@/data/demos";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Afripixel Demo Centre — Experience Real Digital Projects" },
+      { title: "See What Your Business Could Look Like Online — Afripixel" },
       {
         name: "description",
         content:
-          "Don't just imagine it. Experience it. Explore real Afripixel projects by industry and interact with live demonstrations before starting your own.",
+          "Explore professionally designed websites and digital platforms built for real business needs. Find a demo in your industry and see what Afripixel can build for you.",
       },
-      { property: "og:title", content: "Afripixel Demo Centre — Experience Real Projects" },
+      {
+        property: "og:title",
+        content: "See What Your Business Could Look Like Online — Afripixel",
+      },
       {
         property: "og:description",
         content:
@@ -25,24 +52,119 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const transformations = [
-  { from: "Manual processes", to: "Digital system" },
-  { from: "No online presence", to: "Professional website" },
-  { from: "Lost enquiries", to: "Lead management" },
-  { from: "Poor visibility", to: "Business dashboard" },
+const capabilities = [
+  {
+    icon: Globe,
+    title: "Business Websites",
+    body: "Build credibility and generate enquiries with a professional online presence.",
+  },
+  {
+    icon: ShoppingCart,
+    title: "E-commerce Websites",
+    body: "Turn your website into a 24/7 sales channel customers can buy from anytime.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "Booking & Reservation Systems",
+    body: "Let customers book appointments, rooms or services without calling.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Business Management Systems",
+    body: "Digitise processes, manage records and reduce manual work.",
+  },
+  {
+    icon: Building2,
+    title: "Real Estate Platforms",
+    body: "Showcase properties and capture qualified leads with listing-ready pages.",
+  },
+  {
+    icon: Code2,
+    title: "Custom Web Applications",
+    body: "Build the exact digital solution your business needs, from the ground up.",
+  },
 ];
 
-const flow = [
-  "Your Business Challenge",
-  "Afripixel Solution",
-  "Interactive Demonstration",
-  "Your Digital Product",
+const principles = [
+  { icon: Smartphone, label: "Mobile-first design" },
+  { icon: Target, label: "Conversion-focused layouts" },
+  { icon: Search, label: "SEO-ready structure" },
+  { icon: MessageCircle, label: "WhatsApp & lead integration" },
+  { icon: Zap, label: "Fast-loading experiences" },
+  { icon: BarChart3, label: "Analytics & tracking" },
+  { icon: CreditCard, label: "Payment integrations" },
+  { icon: FileEdit, label: "Easy content management" },
+];
+
+const process = [
+  {
+    no: "01",
+    title: "Tell Us What You Need",
+    body: "Share your business, goals and requirements with our team.",
+  },
+  {
+    no: "02",
+    title: "We Design the Experience",
+    body: "Our team develops a website built around your customers and objectives.",
+  },
+  {
+    no: "03",
+    title: "Review & Refine",
+    body: "You provide feedback and we refine the website until it's right.",
+  },
+  {
+    no: "04",
+    title: "Launch & Grow",
+    body: "Your website goes live and can be supported with ongoing digital marketing.",
+  },
+];
+
+const assessmentBenefits = [
+  "What your website should include",
+  "How you can generate more enquiries",
+  "Which digital tools could improve your operations",
+  "Opportunities you're currently missing",
+];
+
+const faqs = [
+  {
+    q: "How much does a website cost?",
+    a: "Cost depends on scope — a simple business website is priced differently from a booking system or custom application. Browse a demo close to what you need, then request a quote tailored to your project.",
+  },
+  {
+    q: "How long does development take?",
+    a: "Timelines depend on complexity. We agree a schedule upfront during your project brief so you know exactly when to expect launch.",
+  },
+  {
+    q: "Can you integrate M-Pesa?",
+    a: "Yes. Payment integrations, including M-Pesa, can be added depending on your business needs.",
+  },
+  {
+    q: "Can my website connect to WhatsApp?",
+    a: "Yes. WhatsApp and lead integrations are one of our standard capabilities across projects.",
+  },
+  {
+    q: "Can you manage the website after launch?",
+    a: "Yes. We can continue supporting your site after launch, alongside digital marketing services.",
+  },
+  {
+    q: "Do you provide SEO?",
+    a: "Yes. Every site we build is SEO-ready from the start, with further optimisation available.",
+  },
+  {
+    q: "Can you build custom systems?",
+    a: "Yes. Beyond websites, we build booking systems, business management tools and custom web applications.",
+  },
+  {
+    q: "Can you redesign an existing website?",
+    a: "Yes. We can redesign or migrate an existing site into a modern, conversion-focused experience.",
+  },
 ];
 
 function Index() {
   return (
     <>
-      {/* Hero */}
+      {/* 1. Hero — sell the outcome, not the portfolio */}
       <section className="hero-gradient relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-28 lg:px-8">
           <div className="reveal">
@@ -51,26 +173,28 @@ function Index() {
               Don&apos;t just imagine it. Experience it.
             </span>
             <h1 className="mt-6 text-4xl leading-[1.08] font-semibold sm:text-5xl lg:text-6xl">
-              Experience What <span className="brand-gradient-text">Afripixel</span> Can Build For
-              Your Business
+              See What Your <span className="brand-gradient-text">Business</span> Could Look Like
+              Online
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Explore real projects we&apos;ve created for different industries and interact with
-              live demonstrations before starting your own project.
+              Explore professionally designed websites and digital platforms built for real business
+              needs — then interact with the live demonstrations before starting your own.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button variant="hero" size="xl" asChild>
-                <Link to="/industries">
-                  Explore Industries <ArrowRight className="h-4 w-4" />
+                <Link to="/demonstrations">
+                  Explore Our Demos <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="xl" asChild>
-                <Link to="/demonstrations">View Demonstrations</Link>
-              </Button>
+              <RequestDialog>
+                <Button variant="outline" size="xl">
+                  Start Your Website
+                </Button>
+              </RequestDialog>
             </div>
             <p className="mt-8 text-sm text-muted-foreground">
-              {featuredDemos().length > 0 ? "15 live projects" : null} · 8 industries · Real,
-              interactive websites
+              {demos.length}+ live demonstrations · {industries.length}+ industries · Designed for
+              conversion
             </p>
           </div>
 
@@ -87,7 +211,6 @@ function Index() {
               </div>
 
               <div className="mt-4 overflow-hidden rounded-lg border border-border">
-                {/* Live website preview */}
                 <div className="h-[400px] bg-background">
                   <iframe
                     src="https://powel.afripixelprojects.com"
@@ -97,17 +220,6 @@ function Index() {
                   />
                 </div>
               </div>
-
-              {/* <div className="mt-4 space-y-3">
-                <div className="h-24 rounded-lg bg-[image:var(--gradient-hero)] ring-1 ring-border" />
-                <div className="h-3 w-3/4 rounded bg-secondary" />
-                <div className="h-3 w-1/2 rounded bg-secondary" />
-                <div className="grid grid-cols-3 gap-2 pt-1">
-                  <div className="h-12 rounded bg-secondary" />
-                  <div className="h-12 rounded bg-secondary" />
-                  <div className="h-12 rounded bg-secondary" />
-                </div>
-              </div> */}
             </div>
             <div
               className="card-surface absolute -bottom-8 -left-4 z-20 hidden w-52 p-4 sm:block"
@@ -124,46 +236,14 @@ function Index() {
         </div>
       </section>
 
-      {/* Business freedom */}
+      {/* 2. Industry selector */}
       <section className="border-t border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 className="max-w-2xl text-3xl font-semibold sm:text-4xl">
-            From Business Challenge to Digital Solution
-          </h2>
-          <div className="mt-12 grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-            <ol className="space-y-3">
-              {flow.map((step, i) => (
-                <li key={step}>
-                  <div className="rounded-xl border border-border bg-background px-5 py-4 text-sm font-medium">
-                    <span className="mr-3 text-xs text-accent">0{i + 1}</span>
-                    {step}
-                  </div>
-                  {i < flow.length - 1 ? (
-                    <ArrowDown className="mx-auto my-1 h-4 w-4 text-muted-foreground" />
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {transformations.map((t) => (
-                <div key={t.from} className="card-surface p-5">
-                  <p className="text-sm text-muted-foreground line-through">{t.from}</p>
-                  <p className="mt-2 text-base font-semibold">{t.to}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Industries */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">Explore Solutions by Industry</h2>
+            <h2 className="text-3xl font-semibold sm:text-4xl">Find a Website for Your Industry</h2>
             <p className="mt-4 text-muted-foreground">
-              Select your industry and see a real Afripixel project designed around businesses like
-              yours.
+              A real-estate company doesn&apos;t need to see a school website — they need to see
+              what we can build for a business like theirs. Select your industry to find out.
             </p>
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -180,7 +260,7 @@ function Index() {
                   {industry.description}
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-accent">
-                  View Demonstration
+                  View Industry Demos
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </Link>
@@ -189,10 +269,16 @@ function Index() {
         </div>
       </section>
 
-      {/* Featured */}
+      {/* 3. Featured demos — strongest sales section */}
       <section className="border-t border-border bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-semibold sm:text-4xl">Featured Projects</h2>
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold sm:text-4xl">Featured Projects</h2>
+            <p className="mt-4 text-muted-foreground">
+              A few of our strongest projects — each one solving a real business problem, not just a
+              design exercise.
+            </p>
+          </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredDemos().map((demo) => (
               <div key={demo.slug} className="card-surface flex flex-col p-6">
@@ -205,7 +291,7 @@ function Index() {
                 </p>
                 <Button variant="outline" className="mt-5 w-full" asChild>
                   <Link to="/demo/$slug" params={{ slug: demo.slug }}>
-                    View Demonstration
+                    View Live Demo
                   </Link>
                 </Button>
               </div>
@@ -214,34 +300,181 @@ function Index() {
         </div>
       </section>
 
-      {/* Before / After */}
+      {/* 4. What can we build for you? */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-secondary/50 p-8">
-              <h3 className="text-xl font-semibold text-muted-foreground">Before</h3>
-              <ul className="mt-6 space-y-3 text-sm">
-                {[
-                  "Outdated website",
-                  "Manual processes",
-                  "Poor online presence",
-                  "Difficult customer communication",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-muted-foreground">
-                    <X className="h-4 w-4 shrink-0 text-primary" />
-                    {item}
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold tracking-wide text-accent uppercase">
+              More Than Just a Website
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">What Can We Build For You?</h2>
+            <p className="mt-4 text-muted-foreground">
+              The demos are proof of what&apos;s possible — here&apos;s the full range of digital
+              solutions behind them.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map((c) => (
+              <div key={c.title} className="card-surface p-6">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[image:var(--gradient-brand)]">
+                  <c.icon className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="mt-5 text-lg font-semibold">{c.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10">
+            <Button variant="hero" size="lg" asChild>
+              <Link to="/industries">Find Your Solution</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Why these websites are different */}
+      <section className="border-t border-border bg-card">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold sm:text-4xl">
+              We Don&apos;t Build Websites Just to Look Good.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              We build them to help businesses{" "}
+              <span className="font-semibold text-foreground">
+                Attract → Engage → Convert → Grow.
+              </span>{" "}
+              That&apos;s a different proposition from a freelancer who just builds beautiful
+              websites — we build websites that work as marketing assets.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {principles.map((p) => (
+              <div key={p.label} className="card-surface flex items-center gap-3 p-5">
+                <p.icon className="h-5 w-5 shrink-0 text-accent" />
+                <span className="text-sm font-medium">{p.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Social proof / credibility */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold sm:text-4xl">
+              Trusted to Build Digital Experiences
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Digital marketing and development under one roof — so your website isn&apos;t just
+              built well, it&apos;s built to be found and to convert.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-5 sm:grid-cols-3">
+            <div className="card-surface p-8 text-center">
+              <p className="brand-gradient-text text-4xl font-semibold">{demos.length}+</p>
+              <p className="mt-2 text-sm text-muted-foreground">Live projects in the Demo Centre</p>
+            </div>
+            <div className="card-surface p-8 text-center">
+              <p className="brand-gradient-text text-4xl font-semibold">{industries.length}+</p>
+              <p className="mt-2 text-sm text-muted-foreground">Industries served</p>
+            </div>
+            <div className="card-surface p-8 text-center">
+              <p className="brand-gradient-text text-4xl font-semibold">100%</p>
+              <p className="mt-2 text-sm text-muted-foreground">Real, interactive demonstrations</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. How it works — from idea to launch */}
+      <section className="border-t border-border bg-secondary/40">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold sm:text-4xl">From Idea to Launch</h2>
+            <p className="mt-4 text-muted-foreground">
+              A simple, transparent process — so there&apos;s no uncertainty around how a project
+              with us works.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-5 lg:grid-cols-4">
+            {process.map((s) => (
+              <div key={s.no} className="card-surface p-7">
+                <span className="brand-gradient-text text-3xl font-semibold">{s.no}</span>
+                <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10">
+            <RequestDialog>
+              <Button variant="hero" size="lg">
+                Start Your Project
+              </Button>
+            </RequestDialog>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Full demo centre teaser */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="card-surface flex flex-col items-start gap-6 p-10 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold sm:text-3xl">Explore All Our Demos</h2>
+              <p className="mt-3 max-w-xl text-muted-foreground">
+                Browse all {demos.length}+ live projects across every industry we&apos;ve worked in,
+                filterable by category.
+              </p>
+            </div>
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/demonstrations">
+                View the Full Demo Centre <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. Business assessment / lead magnet */}
+      <section className="border-t border-border bg-card">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <h2 className="text-3xl font-semibold sm:text-4xl">
+                Not Sure What Your Business Needs?
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                Get a quick assessment of your current digital presence and discover:
+              </p>
+              <ul className="mt-6 space-y-3">
+                {assessmentBenefits.map((b) => (
+                  <li key={b} className="flex items-center gap-3 text-sm font-medium">
+                    <Check className="h-4 w-4 shrink-0 text-accent" />
+                    {b}
                   </li>
                 ))}
               </ul>
+              <Button variant="accent" size="xl" className="mt-8" asChild>
+                <Link to="/assessment">Get My Free Business Assessment</Link>
+              </Button>
             </div>
             <div className="card-surface p-8">
+              <h3 className="text-xl font-semibold">Before</h3>
+              <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
+                <li>Outdated website</li>
+                <li>Manual processes</li>
+                <li>Poor online presence</li>
+                <li>Difficult customer communication</li>
+              </ul>
+              <div className="my-6 h-px bg-border" />
               <h3 className="text-xl font-semibold">After</h3>
               <ul className="mt-6 space-y-3 text-sm">
                 {[
                   "Modern digital presence",
                   "Better customer experience",
                   "Professional branding",
-                  "Easier communication",
                   "Scalable digital solution",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3">
@@ -252,46 +485,48 @@ function Index() {
               </ul>
             </div>
           </div>
-          <div className="mt-10">
-            <Button variant="hero" size="lg" asChild>
-              <Link to="/industries">See What We Can Build</Link>
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* Assessment */}
-      <section className="border-t border-border bg-card">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1.4fr_auto] lg:items-center lg:px-8">
-          <div>
-            <h2 className="text-2xl font-semibold sm:text-3xl">
-              Not sure what your business needs?
-            </h2>
-            <p className="mt-3 max-w-2xl text-muted-foreground">
-              Take a quick assessment and discover where your business could benefit from digital
-              solutions.
+      {/* 10. FAQ */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h2>
+            <p className="mt-4 text-muted-foreground">
+              Answers to the questions that come up most before starting a project.
             </p>
           </div>
-          <Button variant="accent" size="xl" asChild>
-            <Link to="/assessment">Take the Assessment</Link>
-          </Button>
+          <Accordion type="single" collapsible className="mt-10">
+            {faqs.map((f) => (
+              <AccordionItem key={f.q} value={f.q}>
+                <AccordionTrigger className="text-base">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* 11. Final conversion section */}
       <section className="hero-gradient border-t border-border">
         <div className="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6">
-          <h2 className="text-3xl font-semibold sm:text-4xl">Your Business Could Look Like This</h2>
+          <h2 className="text-3xl font-semibold sm:text-4xl">
+            Your Business Deserves More Than a Website.
+          </h2>
           <p className="mt-4 text-muted-foreground">
-            Explore our existing projects and discover what Afripixel could build for your business.
+            Let&apos;s build a digital experience that helps your business attract customers,
+            generate enquiries and grow.
           </p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/industries">Explore Industries</Link>
-            </Button>
+            <RequestDialog>
+              <Button variant="hero" size="xl">
+                Start Your Website
+              </Button>
+            </RequestDialog>
             <RequestDialog>
               <Button variant="outline" size="xl">
-                Request a Solution
+                Book a Consultation
               </Button>
             </RequestDialog>
           </div>
