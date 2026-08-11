@@ -138,21 +138,65 @@ function RootComponent() {
   // fully into view. Since every demo preview on this site is an embedded
   // iframe, clicking a link inside one (hero preview, featured demos,
   // individual demo pages) was hijacking the whole page's scroll position.
-  // This restores scroll position right after focus moves into any iframe.
+  // Because the site also uses `scroll-behavior: smooth`, that unwanted
+  // scroll is animated over ~300ms, so a single correction isn't enough —
+  // it gets overridden mid-animation. This freezes the "last known good"
+  // scroll position while the pointer is over any iframe (so the glitch
+  // itself never gets captured as the position to restore), then forces
+  // the page back to that position on every frame for long enough to
+  // outlast the browser's own animated scroll.
   useEffect(() => {
     let lastX = window.scrollX;
     let lastY = window.scrollY;
+    let frozen = false;
 
     const trackScroll = () => {
+      if (frozen) return;
       lastX = window.scrollX;
       lastY = window.scrollY;
     };
 
-    const restoreScrollIfIframeFocused = () => {
-      if (document.activeElement?.tagName === "IFRAME") {
-        requestAnimationFrame(() => window.scrollTo(lastX, lastY));
-      }
+    const freeze = () => {
+      frozen = true;
     };
+    const unfreeze = () => {
+      frozen = false;
+    };
+
+    const restoreScrollIfIframeFocused = () => {
+      if (document.activeElement?.tagName !== "IFRAME") return;
+      const root = document.documentElement;
+      const prevBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      const start = performance.now();
+      const duration = 400;
+      const tick = (now: number) => {
+        window.scrollTo(lastX, lastY);
+        if (now - start < duration) {
+          requestAnimationFrame(tick);
+        } else {
+          root.style.scrollBehavior = prevBehavior;
+        }
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const attachHoverGuards = () => {
+      document.querySelectorAll("iframe").forEach((el) => {
+        el.addEventListener("mouseenter", freeze);
+        el.addEventListener("mouseleave", unfreeze);
+      });
+    };
+    const detachHoverGuards = () => {
+      document.querySelectorAll("iframe").forEach((el) => {
+        el.removeEventListener("mouseenter", freeze);
+        el.removeEventListener("mouseleave", unfreeze);
+      });
+    };
+
+    attachHoverGuards();
+    const observer = new MutationObserver(attachHoverGuards);
+    observer.observe(document.body, { childList: true, subtree: true });
 
     window.addEventListener("scroll", trackScroll, { passive: true });
     window.addEventListener("blur", restoreScrollIfIframeFocused);
@@ -160,6 +204,8 @@ function RootComponent() {
     return () => {
       window.removeEventListener("scroll", trackScroll);
       window.removeEventListener("blur", restoreScrollIfIframeFocused);
+      observer.disconnect();
+      detachHoverGuards();
     };
   }, []);
 
