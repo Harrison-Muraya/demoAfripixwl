@@ -11,7 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { lockPageScroll, releasePageScrollLock } from "../lib/iframe-scroll-lock";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -134,37 +133,6 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
-  // Site-wide fallback: every demo preview also locks the scroll directly
-  // via its own onFocus handler (see iframe-scroll-lock.ts), which fires
-  // earlier and more reliably than this. This effect exists to catch any
-  // iframe that might not wire that up directly, using the same shared,
-  // single-source-of-truth lock so the two triggers can't conflict.
-  useEffect(() => {
-    const handleBlur = () => {
-      if (document.activeElement?.tagName !== "IFRAME") return;
-      lockPageScroll();
-    };
-
-    // A mousedown/touchstart landing on an iframe's rendered box does reach
-    // the parent document (even for cross-origin content) — this fires
-    // before focus has actually transferred, giving an earlier signal.
-    const handlePointerDown = (e: Event) => {
-      if ((e.target as HTMLElement | null)?.tagName !== "IFRAME") return;
-      lockPageScroll();
-    };
-
-    window.addEventListener("blur", handleBlur);
-    document.addEventListener("mousedown", handlePointerDown, true);
-    document.addEventListener("touchstart", handlePointerDown, true);
-
-    return () => {
-      window.removeEventListener("blur", handleBlur);
-      document.removeEventListener("mousedown", handlePointerDown, true);
-      document.removeEventListener("touchstart", handlePointerDown, true);
-      releasePageScrollLock();
-    };
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
