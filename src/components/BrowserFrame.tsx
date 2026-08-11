@@ -97,7 +97,7 @@ export function BrowserFrame({
       <div
         ref={wrapperRef}
         className={cn(
-          "relative overflow-hidden bg-background",
+          "relative overflow-hidden overscroll-contain bg-background",
           isMobile && "flex justify-center overflow-auto py-4",
         )}
         style={{ height }}
@@ -108,7 +108,7 @@ export function BrowserFrame({
             title={title}
             loading="lazy"
             className="h-full shrink-0 rounded-md border border-border"
-            style={{ width: MOBILE_WIDTH }}
+            style={{ width: MOBILE_WIDTH, overscrollBehavior: "contain" }}
           />
         ) : (
           <iframe
@@ -121,6 +121,7 @@ export function BrowserFrame({
               height: `calc(100% / ${scale || 1})`,
               transform: `scale(${scale || 1})`,
               transformOrigin: "top left",
+              overscrollBehavior: "contain",
             }}
           />
         )}
