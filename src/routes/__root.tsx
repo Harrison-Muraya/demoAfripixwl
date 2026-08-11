@@ -137,75 +137,74 @@ function RootComponent() {
   // Browsers auto-scroll the parent page to bring a newly-focused iframe
   // fully into view. Since every demo preview on this site is an embedded
   // iframe, clicking a link inside one (hero preview, featured demos,
-  // individual demo pages) was hijacking the whole page's scroll position.
-  // Because the site also uses `scroll-behavior: smooth`, that unwanted
-  // scroll is animated over ~300ms, so a single correction isn't enough —
-  // it gets overridden mid-animation. This freezes the "last known good"
-  // scroll position while the pointer is over any iframe (so the glitch
-  // itself never gets captured as the position to restore), then forces
-  // the page back to that position on every frame for long enough to
-  // outlast the browser's own animated scroll.
+  // individual demo pages) was hijacking the whole page's scroll position —
+  // this is a long-standing, cross-browser iframe behavior, not a bug in
+  // this app (see https://bugzilla.mozilla.org/show_bug.cgi?id=638598).
+  //
+  // Trying to *correct* the scroll position after the fact loses the race
+  // against the browser's own (often animated, since this site also uses
+  // scroll-behavior: smooth) scroll. Instead: the moment focus moves into
+  // any iframe, make the page physically unable to scroll at all for a
+  // short window, so the browser's attempted scroll is a no-op. Normal
+  // hovering / mouse-wheel scrolling over a demo preview is unaffected —
+  // this only engages once focus has genuinely moved into the iframe
+  // (i.e. after a real click), not on mere hover.
   useEffect(() => {
-    let lastX = window.scrollX;
-    let lastY = window.scrollY;
-    let frozen = false;
+    let unlockTimer: number | undefined;
+    let locked = false;
+    let lockedScrollY = 0;
 
-    const trackScroll = () => {
-      if (frozen) return;
-      lastX = window.scrollX;
-      lastY = window.scrollY;
+    const lockScroll = () => {
+      if (locked) return;
+      locked = true;
+      lockedScrollY = window.scrollY;
+      const html = document.documentElement;
+      html.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
     };
 
-    const freeze = () => {
-      frozen = true;
-    };
-    const unfreeze = () => {
-      frozen = false;
+    const unlockScroll = () => {
+      if (!locked) return;
+      locked = false;
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      window.scrollTo(0, lockedScrollY);
     };
 
-    const restoreScrollIfIframeFocused = () => {
+    const handleBlur = () => {
       if (document.activeElement?.tagName !== "IFRAME") return;
-      const root = document.documentElement;
-      const prevBehavior = root.style.scrollBehavior;
-      root.style.scrollBehavior = "auto";
-      const start = performance.now();
-      const duration = 400;
-      const tick = (now: number) => {
-        window.scrollTo(lastX, lastY);
-        if (now - start < duration) {
-          requestAnimationFrame(tick);
-        } else {
-          root.style.scrollBehavior = prevBehavior;
-        }
-      };
-      requestAnimationFrame(tick);
+      lockScroll();
+      window.clearTimeout(unlockTimer);
+      unlockTimer = window.setTimeout(unlockScroll, 500);
     };
 
-    const attachHoverGuards = () => {
-      document.querySelectorAll("iframe").forEach((el) => {
-        el.addEventListener("mouseenter", freeze);
-        el.addEventListener("mouseleave", unfreeze);
-      });
-    };
-    const detachHoverGuards = () => {
-      document.querySelectorAll("iframe").forEach((el) => {
-        el.removeEventListener("mouseenter", freeze);
-        el.removeEventListener("mouseleave", unfreeze);
-      });
+    // A mousedown landing on an iframe's rendered box does reach the
+    // parent document (even for cross-origin content) — this fires before
+    // focus has actually transferred, giving an earlier, independent
+    // signal alongside the blur-based one above.
+    const handlePointerDown = (e: Event) => {
+      if ((e.target as HTMLElement | null)?.tagName !== "IFRAME") return;
+      lockScroll();
+      window.clearTimeout(unlockTimer);
+      unlockTimer = window.setTimeout(unlockScroll, 500);
     };
 
-    attachHoverGuards();
-    const observer = new MutationObserver(attachHoverGuards);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    window.addEventListener("scroll", trackScroll, { passive: true });
-    window.addEventListener("blur", restoreScrollIfIframeFocused);
+    window.addEventListener("blur", handleBlur);
+    document.addEventListener("mousedown", handlePointerDown, true);
+    document.addEventListener("touchstart", handlePointerDown, true);
 
     return () => {
-      window.removeEventListener("scroll", trackScroll);
-      window.removeEventListener("blur", restoreScrollIfIframeFocused);
-      observer.disconnect();
-      detachHoverGuards();
+      window.removeEventListener("blur", handleBlur);
+      document.removeEventListener("mousedown", handlePointerDown, true);
+      document.removeEventListener("touchstart", handlePointerDown, true);
+      window.clearTimeout(unlockTimer);
+      unlockScroll();
     };
   }, []);
 
