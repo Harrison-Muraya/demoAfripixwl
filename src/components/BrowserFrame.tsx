@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Monitor, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { lockPageScroll } from "@/lib/iframe-scroll-lock";
 
 type Props = {
   url: string;
@@ -107,6 +108,7 @@ export function BrowserFrame({
             src={src}
             title={title}
             loading="lazy"
+            onFocus={() => lockPageScroll()}
             className="h-full shrink-0 rounded-md border border-border"
             style={{ width: MOBILE_WIDTH, overscrollBehavior: "contain" }}
           />
@@ -115,6 +117,7 @@ export function BrowserFrame({
             src={src}
             title={title}
             loading="lazy"
+            onFocus={() => lockPageScroll()}
             className="absolute top-0 left-0 border-0"
             style={{
               width: DESKTOP_WIDTH,

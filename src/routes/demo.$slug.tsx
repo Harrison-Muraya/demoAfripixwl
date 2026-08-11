@@ -4,6 +4,7 @@ import { ArrowLeft, ExternalLink, Maximize2, TriangleAlert } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
 import { getDemo } from "@/data/demos";
+import { lockPageScroll } from "@/lib/iframe-scroll-lock";
 
 export const Route = createFileRoute("/demo/$slug")({
   loader: ({ params }) => {
@@ -112,6 +113,7 @@ function DemoPage() {
             title={`${demo.name} live demonstration`}
             className="h-[62vh] w-full border-0 bg-background sm:h-[75vh] lg:h-[82vh]"
             loading="lazy"
+            onFocus={() => lockPageScroll()}
             onError={() => setBlocked(true)}
           />
         )}

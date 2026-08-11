@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { lockPageScroll, releasePageScrollLock } from "../lib/iframe-scroll-lock";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -134,65 +135,23 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  // Browsers auto-scroll the parent page to bring a newly-focused iframe
-  // fully into view. Since every demo preview on this site is an embedded
-  // iframe, clicking a link inside one (hero preview, featured demos,
-  // individual demo pages) was hijacking the whole page's scroll position —
-  // this is a long-standing, cross-browser iframe behavior, not a bug in
-  // this app (see https://bugzilla.mozilla.org/show_bug.cgi?id=638598).
-  //
-  // Trying to *correct* the scroll position after the fact loses the race
-  // against the browser's own (often animated, since this site also uses
-  // scroll-behavior: smooth) scroll. Instead: the moment focus moves into
-  // any iframe, make the page physically unable to scroll at all for a
-  // short window, so the browser's attempted scroll is a no-op. Normal
-  // hovering / mouse-wheel scrolling over a demo preview is unaffected —
-  // this only engages once focus has genuinely moved into the iframe
-  // (i.e. after a real click), not on mere hover.
+  // Site-wide fallback: every demo preview also locks the scroll directly
+  // via its own onFocus handler (see iframe-scroll-lock.ts), which fires
+  // earlier and more reliably than this. This effect exists to catch any
+  // iframe that might not wire that up directly, using the same shared,
+  // single-source-of-truth lock so the two triggers can't conflict.
   useEffect(() => {
-    let unlockTimer: number | undefined;
-    let locked = false;
-    let lockedScrollY = 0;
-
-    const lockScroll = () => {
-      if (locked) return;
-      locked = true;
-      lockedScrollY = window.scrollY;
-      const html = document.documentElement;
-      html.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${lockedScrollY}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-    };
-
-    const unlockScroll = () => {
-      if (!locked) return;
-      locked = false;
-      document.documentElement.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      window.scrollTo(0, lockedScrollY);
-    };
-
     const handleBlur = () => {
       if (document.activeElement?.tagName !== "IFRAME") return;
-      lockScroll();
-      window.clearTimeout(unlockTimer);
-      unlockTimer = window.setTimeout(unlockScroll, 500);
+      lockPageScroll();
     };
 
-    // A mousedown landing on an iframe's rendered box does reach the
-    // parent document (even for cross-origin content) — this fires before
-    // focus has actually transferred, giving an earlier, independent
-    // signal alongside the blur-based one above.
+    // A mousedown/touchstart landing on an iframe's rendered box does reach
+    // the parent document (even for cross-origin content) — this fires
+    // before focus has actually transferred, giving an earlier signal.
     const handlePointerDown = (e: Event) => {
       if ((e.target as HTMLElement | null)?.tagName !== "IFRAME") return;
-      lockScroll();
-      window.clearTimeout(unlockTimer);
-      unlockTimer = window.setTimeout(unlockScroll, 500);
+      lockPageScroll();
     };
 
     window.addEventListener("blur", handleBlur);
@@ -203,8 +162,7 @@ function RootComponent() {
       window.removeEventListener("blur", handleBlur);
       document.removeEventListener("mousedown", handlePointerDown, true);
       document.removeEventListener("touchstart", handlePointerDown, true);
-      window.clearTimeout(unlockTimer);
-      unlockScroll();
+      releasePageScrollLock();
     };
   }, []);
 
