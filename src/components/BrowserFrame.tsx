@@ -111,6 +111,18 @@ export function BrowserFrame({
             style={{ width: MOBILE_WIDTH }}
           />
         ) : (
+          // Known, accepted trade-off: forcing a real 1440px layout width
+          // (so the embedded page renders its desktop breakpoint, not
+          // mobile) creates a layout box much bigger than what's visible.
+          // When a click focuses something inside it, some browsers try to
+          // scroll the page to reveal that oversized box, causing a jump.
+          // This has been tried and reverted twice (a scroll-lock, and a
+          // click-to-open overlay that avoided the issue by never letting
+          // focus enter the iframe here) — both traded away either
+          // reliability or direct interactivity. Decision: keep these
+          // previews directly interactive/scrollable and accept the
+          // occasional scroll jump. Don't re-attempt a JS-side scroll fix
+          // here without discussing the trade-off again.
           <iframe
             src={src}
             title={title}
