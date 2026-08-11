@@ -906,7 +906,7 @@ export const demos: Demo[] = [
     demoUrl: "https://lab-lice.afripixelprojects.com",
   },
 ];
-// -------------------------------------------------------
+
 export const featuredSlugs = ["grammarspire", "malel-heights", "tiba-healthcare", "winpa-tours"];
 
 export const getIndustry = (slug: string) => industries.find((i) => i.slug === slug);
