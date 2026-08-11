@@ -191,9 +191,17 @@ function Index() {
             src="https://powel.afripixelprojects.com"
             title="Powel-elss Enterprises website preview"
             height="26rem"
+            overlay={
+              <a
+                href="https://powel.afripixelprojects.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Powel-elss Enterprises live site in a new tab"
+              />
+            }
             footer={
               <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
-                A live client project — scroll and click through it exactly as their customers do.
+                A live client project — click through to open it and browse freely.
               </p>
             }
           />
@@ -245,6 +253,13 @@ function Index() {
                   title={demo.name}
                   height="16rem"
                   deviceToggle
+                  overlay={
+                    <Link
+                      to="/demo/$slug"
+                      params={{ slug: demo.slug }}
+                      aria-label={`View ${demo.name} demo`}
+                    />
+                  }
                 />
                 <div className="mt-4 flex items-start justify-between gap-4">
                   <div>
