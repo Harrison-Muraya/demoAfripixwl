@@ -134,6 +134,35 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // Browsers auto-scroll the parent page to bring a newly-focused iframe
+  // fully into view. Since every demo preview on this site is an embedded
+  // iframe, clicking a link inside one (hero preview, featured demos,
+  // individual demo pages) was hijacking the whole page's scroll position.
+  // This restores scroll position right after focus moves into any iframe.
+  useEffect(() => {
+    let lastX = window.scrollX;
+    let lastY = window.scrollY;
+
+    const trackScroll = () => {
+      lastX = window.scrollX;
+      lastY = window.scrollY;
+    };
+
+    const restoreScrollIfIframeFocused = () => {
+      if (document.activeElement?.tagName === "IFRAME") {
+        requestAnimationFrame(() => window.scrollTo(lastX, lastY));
+      }
+    };
+
+    window.addEventListener("scroll", trackScroll, { passive: true });
+    window.addEventListener("blur", restoreScrollIfIframeFocused);
+
+    return () => {
+      window.removeEventListener("scroll", trackScroll);
+      window.removeEventListener("blur", restoreScrollIfIframeFocused);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col overflow-x-hidden pb-[4.5rem] lg:pb-0">
