@@ -28,7 +28,6 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
   const [submitting, setSubmitting] = useState(false);
   const send = useServerFn(submitSolutionRequest);
 
-
   return (
     <Dialog
       open={open}
@@ -72,6 +71,7 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                     data: {
                       name: get("name"),
                       business: get("business"),
+                      businessDescription: get("businessDescription"),
                       email: get("email"),
                       phone: get("phone"),
                       industry: get("industry"),
@@ -87,7 +87,6 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                 }
               }}
             >
-
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
                   <Label htmlFor="name">Name</Label>
@@ -99,12 +98,29 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" required placeholder="you@business.com" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="you@business.com"
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="phone">Phone</Label>
                   <Input id="phone" name="phone" placeholder="+254 700 000 000" />
                 </div>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="businessDescription">
+                  Business Description <span className="text-muted-foreground">(optional)</span>
+                </Label>
+                <Textarea
+                  id="businessDescription"
+                  name="businessDescription"
+                  rows={3}
+                  placeholder="Briefly describe what your business does"
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="industry">Industry</Label>
@@ -125,13 +141,29 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="project">Project you&apos;re interested in</Label>
-                <Input id="project" name="project" defaultValue={defaultProject} placeholder="e.g. GrammarSpire" />
+                <Input
+                  id="project"
+                  name="project"
+                  defaultValue={defaultProject}
+                  placeholder="e.g. GrammarSpire"
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="brief">What would you like us to build?</Label>
-                <Textarea id="brief" name="brief" rows={4} placeholder="Describe your idea or challenge" />
+                <Textarea
+                  id="brief"
+                  name="brief"
+                  rows={4}
+                  placeholder="Describe your idea or challenge"
+                />
               </div>
-              <Button type="submit" variant="hero" size="lg" className="w-full" disabled={submitting}>
+              <Button
+                type="submit"
+                variant="hero"
+                size="lg"
+                className="w-full"
+                disabled={submitting}
+              >
                 {submitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" /> Sending...
