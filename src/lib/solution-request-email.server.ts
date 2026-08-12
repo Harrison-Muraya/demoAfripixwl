@@ -11,8 +11,10 @@ export async function sendSolutionRequestEmail(data: Record<string, any>, replyT
   const subject = typeof entry.subject === 'function' ? entry.subject(data) : entry.subject
 
   return sendGmailMessage({
-    to: 'support@afripixelsolutions.com',
-    cc: 'jane@afripixelsolutions.com',
+    to: 'harrisonmuraya8@gmail.com',
+    // cc: '.com',
+    // to: 'support@afripixelsolutions.com',
+    // cc: 'jane@afripixelsolutions.com',
     replyTo,
     subject,
     html,
