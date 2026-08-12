@@ -14,6 +14,182 @@ export type Industry = {
   blurb: string;
 };
 
+// export const industries: Industry[] = [
+//   {
+//     slug: "education",
+//     name: "Education",
+//     description:
+//       "Modern websites and digital experiences for schools, colleges and education organizations.",
+//     blurb: "Explore our education projects.",
+//   },
+//   {
+//     slug: "cleaning-services",
+//     name: "Cleaning & Services",
+//     description: "Professional digital experiences for service-based businesses.",
+//     blurb: "Explore our service business projects.",
+//   },
+//   {
+//     slug: "travel-tourism",
+//     name: "Travel & Tourism",
+//     description: "Engaging websites designed for tour operators and travel businesses.",
+//     blurb: "Explore our travel and tourism projects.",
+//   },
+//   {
+//     slug: "creative-portfolio",
+//     name: "Creative & Portfolio",
+//     description: "Modern visual experiences for creative businesses and professionals.",
+//     blurb: "Explore our creative and portfolio projects.",
+//   },
+//   {
+//     slug: "real-estate",
+//     name: "Real Estate",
+//     description: "Professional property-focused digital experiences.",
+//     blurb: "Explore our real estate projects.",
+//   },
+//   {
+//     slug: "healthcare",
+//     name: "Healthcare",
+//     description:
+//       "Accessible and professional digital experiences for healthcare organizations.",
+//     blurb: "Explore our healthcare projects.",
+//   },
+//   {
+//     slug: "construction",
+//     name: "Construction",
+//     description: "Professional digital platforms for construction and engineering businesses.",
+//     blurb: "Explore our construction and engineering projects.",
+//   },
+//   {
+//     slug: "technology",
+//     name: "Technology",
+//     description: "Modern digital experiences for technology businesses and startups.",
+//     blurb: "Explore our technology projects.",
+//   },
+// ];
+
+// export const demos: Demo[] = [
+//   {
+//     slug: "grammarspire",
+//     name: "GrammarSpire",
+//     industrySlug: "education",
+//     industry: "Education",
+//     description: "A modern school website experience built for an education institution.",
+//     demoUrl: "https://grammarspire.afripixelprojects.com",
+//   },
+//   {
+//     slug: "nakuru-chess",
+//     name: "Nakuru Chess",
+//     industrySlug: "education",
+//     industry: "Education",
+//     description: "A learning and community platform for a chess academy.",
+//     demoUrl: "https://nakuruchess.afripixelprojects.com",
+//   },
+//   {
+//     slug: "mephys",
+//     name: "Mephys",
+//     industrySlug: "cleaning-services",
+//     industry: "Cleaning & Services",
+//     description: "A professional service business website with clear enquiry journeys.",
+//     demoUrl: "https://mephys.afripixelprojects.com",
+//   },
+//   {
+//     slug: "identity-cleaners",
+//     name: "Identity Cleaners",
+//     industrySlug: "cleaning-services",
+//     industry: "Cleaning & Services",
+//     description: "A cleaning company website focused on trust and bookings.",
+//     demoUrl: "https://identitycleaners.afripixelprojects.com",
+//   },
+//   {
+//     slug: "winpa-tours",
+//     name: "Winpa Tours",
+//     industrySlug: "travel-tourism",
+//     industry: "Travel & Tourism",
+//     description: "A tour operator website designed to convert travel enquiries.",
+//     demoUrl: "https://winpatours.afripixelprojects.com",
+//   },
+//   {
+//     slug: "safari-excursions",
+//     name: "Safari Excursions",
+//     industrySlug: "travel-tourism",
+//     industry: "Travel & Tourism",
+//     description: "An immersive safari experience website for travel packages.",
+//     demoUrl: "https://safariexcursions.afripixelprojects.com",
+//   },
+//   {
+//     slug: "volta",
+//     name: "Volta",
+//     industrySlug: "creative-portfolio",
+//     industry: "Creative & Portfolio",
+//     description: "A bold creative brand experience with strong visual storytelling.",
+//     demoUrl: "https://volta.afripixelprojects.com",
+//   },
+//   {
+//     slug: "nairobi-picture",
+//     name: "Nairobi Picture",
+//     industrySlug: "creative-portfolio",
+//     industry: "Creative & Portfolio",
+//     description: "A photography portfolio built around visual impact.",
+//     demoUrl: "https://nairobipicture.afripixelprojects.com",
+//   },
+//   {
+//     slug: "prime",
+//     name: "Prime",
+//     industrySlug: "real-estate",
+//     industry: "Real Estate",
+//     description: "A property listing experience for a real estate business.",
+//     demoUrl: "https://prime.afripixelprojects.com",
+//   },
+//   {
+//     slug: "malel-heights",
+//     name: "Malel Heights",
+//     industrySlug: "real-estate",
+//     industry: "Real Estate",
+//     description: "A premium property development showcase website.",
+//     demoUrl: "https://malelheights.afripixelprojects.com",
+//   },
+//   {
+//     slug: "tiba-healthcare",
+//     name: "Tiba Healthcare",
+//     industrySlug: "healthcare",
+//     industry: "Healthcare",
+//     description: "An accessible healthcare website with clear patient journeys.",
+//     demoUrl: "https://tibahealthcare.afripixelprojects.com",
+//   },
+//   {
+//     slug: "caresphere",
+//     name: "CareSphere",
+//     industrySlug: "healthcare",
+//     industry: "Healthcare",
+//     description: "A modern care provider platform experience.",
+//     demoUrl: "https://caresphere.afripixelprojects.com",
+//   },
+//   {
+//     slug: "scalworks",
+//     name: "Scalworks",
+//     industrySlug: "construction",
+//     industry: "Construction",
+//     description: "A construction and engineering company website.",
+//     demoUrl: "https://scalworks.afripixelprojects.com",
+//   },
+//   {
+//     slug: "tunnelling",
+//     name: "Tunnelling",
+//     industrySlug: "construction",
+//     industry: "Construction",
+//     description: "A specialist engineering and infrastructure project website.",
+//     demoUrl: "https://tunnelling.afripixelprojects.com",
+//   },
+//   {
+//     slug: "dottech",
+//     name: "DotTech",
+//     industrySlug: "technology",
+//     industry: "Technology",
+//     description: "A modern technology company website for a digital business.",
+//     demoUrl: "https://dottech.afripixelprojects.com",
+//   },
+// ];
+// -------------------------------------------------------
 export const industries: Industry[] = [
   {
     slug: "business-professional-services",
@@ -906,7 +1082,7 @@ export const demos: Demo[] = [
     demoUrl: "https://lab-lice.afripixelprojects.com",
   },
 ];
-
+// -------------------------------------------------------
 export const featuredSlugs = ["grammarspire", "malel-heights", "tiba-healthcare", "winpa-tours"];
 
 export const getIndustry = (slug: string) => industries.find((i) => i.slug === slug);
