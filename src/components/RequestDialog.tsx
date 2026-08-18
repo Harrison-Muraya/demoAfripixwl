@@ -118,7 +118,7 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                 <Textarea
                   id="businessDescription"
                   name="businessDescription"
-                  rows={3}
+                  rows={2}
                   placeholder="Briefly describe what your business does"
                 />
               </div>
@@ -153,7 +153,7 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                 <Textarea
                   id="brief"
                   name="brief"
-                  rows={4}
+                  rows={2}
                   placeholder="Describe your idea or challenge"
                 />
               </div>
