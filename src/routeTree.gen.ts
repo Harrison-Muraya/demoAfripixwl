@@ -13,6 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as DemonstrationsRouteImport } from './routes/demonstrations'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminDemosRouteImport } from './routes/admin.demos'
+import { Route as AdminIndustriesRouteImport } from './routes/admin.industries'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as DemoSlugRouteImport } from './routes/demo.$slug'
 import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
@@ -36,6 +41,31 @@ const DemonstrationsRoute = DemonstrationsRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDemosRoute = AdminDemosRouteImport.update({
+  id: '/admin/demos',
+  path: '/admin/demos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndustriesRoute = AdminIndustriesRouteImport.update({
+  id: '/admin/industries',
+  path: '/admin/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSetupRoute = AdminSetupRouteImport.update({
+  id: '/admin/setup',
+  path: '/admin/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoSlugRoute = DemoSlugRouteImport.update({
@@ -65,8 +95,13 @@ export interface FileRoutesByFullPath {
   '/assessment': typeof AssessmentRoute
   '/demonstrations': typeof DemonstrationsRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/admin/demos': typeof AdminDemosRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/demo/$slug': typeof DemoSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -75,8 +110,13 @@ export interface FileRoutesByTo {
   '/assessment': typeof AssessmentRoute
   '/demonstrations': typeof DemonstrationsRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/admin/demos': typeof AdminDemosRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/demo/$slug': typeof DemoSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/industries': typeof IndustriesIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -86,8 +126,13 @@ export interface FileRoutesById {
   '/assessment': typeof AssessmentRoute
   '/demonstrations': typeof DemonstrationsRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/admin/demos': typeof AdminDemosRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/demo/$slug': typeof DemoSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -98,8 +143,13 @@ export interface FileRouteTypes {
     | '/assessment'
     | '/demonstrations'
     | '/how-it-works'
+    | '/admin/demos'
+    | '/admin/industries'
+    | '/admin/login'
+    | '/admin/setup'
     | '/demo/$slug'
     | '/industries/$slug'
+    | '/admin/'
     | '/industries/'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -108,8 +158,13 @@ export interface FileRouteTypes {
     | '/assessment'
     | '/demonstrations'
     | '/how-it-works'
+    | '/admin/demos'
+    | '/admin/industries'
+    | '/admin/login'
+    | '/admin/setup'
     | '/demo/$slug'
     | '/industries/$slug'
+    | '/admin'
     | '/industries'
     | '/lovable/email/transactional/preview'
   id:
@@ -118,8 +173,13 @@ export interface FileRouteTypes {
     | '/assessment'
     | '/demonstrations'
     | '/how-it-works'
+    | '/admin/demos'
+    | '/admin/industries'
+    | '/admin/login'
+    | '/admin/setup'
     | '/demo/$slug'
     | '/industries/$slug'
+    | '/admin/'
     | '/industries/'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -129,8 +189,13 @@ export interface RootRouteChildren {
   AssessmentRoute: typeof AssessmentRoute
   DemonstrationsRoute: typeof DemonstrationsRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  AdminDemosRoute: typeof AdminDemosRoute
+  AdminIndustriesRoute: typeof AdminIndustriesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminSetupRoute: typeof AdminSetupRoute
   DemoSlugRoute: typeof DemoSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   IndustriesIndexRoute: typeof IndustriesIndexRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -163,6 +228,41 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/demos': {
+      id: '/admin/demos'
+      path: '/admin/demos'
+      fullPath: '/admin/demos'
+      preLoaderRoute: typeof AdminDemosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/industries': {
+      id: '/admin/industries'
+      path: '/admin/industries'
+      fullPath: '/admin/industries'
+      preLoaderRoute: typeof AdminIndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/setup': {
+      id: '/admin/setup'
+      path: '/admin/setup'
+      fullPath: '/admin/setup'
+      preLoaderRoute: typeof AdminSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/$slug': {
@@ -201,8 +301,13 @@ const rootRouteChildren: RootRouteChildren = {
   AssessmentRoute: AssessmentRoute,
   DemonstrationsRoute: DemonstrationsRoute,
   HowItWorksRoute: HowItWorksRoute,
+  AdminDemosRoute: AdminDemosRoute,
+  AdminIndustriesRoute: AdminIndustriesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminSetupRoute: AdminSetupRoute,
   DemoSlugRoute: DemoSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
   IndustriesIndexRoute: IndustriesIndexRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
