@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { industryIcons, industryIconFallback } from "@/lib/industry-icons";
-import type { Industry } from "@/data/demos";
+import type { Industry } from "@/lib/site-content";
 
 type Props = {
   industry: Industry;

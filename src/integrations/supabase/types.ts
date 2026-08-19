@@ -14,74 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
-      industries: {
-        Row: {
-          id: string
-          slug: string
-          name: string
-          description: string
-          blurb: string
-          sort_order: number
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          slug: string
-          name: string
-          description?: string
-          blurb?: string
-          sort_order?: number
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          slug?: string
-          name?: string
-          description?: string
-          blurb?: string
-          sort_order?: number
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       demos: {
         Row: {
-          id: string
-          slug: string
-          name: string
-          industry_slug: string
-          description: string
-          demo_url: string
-          featured: boolean
-          sort_order: number
           created_at: string
+          demo_url: string
+          description: string
+          featured: boolean
+          id: string
+          industry_slug: string
+          name: string
+          slug: string
+          sort_order: number
           updated_at: string
         }
         Insert: {
-          id?: string
-          slug: string
-          name: string
-          industry_slug: string
-          description?: string
-          demo_url: string
-          featured?: boolean
-          sort_order?: number
           created_at?: string
+          demo_url: string
+          description?: string
+          featured?: boolean
+          id?: string
+          industry_slug: string
+          name: string
+          slug: string
+          sort_order?: number
           updated_at?: string
         }
         Update: {
-          id?: string
-          slug?: string
-          name?: string
-          industry_slug?: string
-          description?: string
-          demo_url?: string
-          featured?: boolean
-          sort_order?: number
           created_at?: string
+          demo_url?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          industry_slug?: string
+          name?: string
+          slug?: string
+          sort_order?: number
           updated_at?: string
         }
         Relationships: [
@@ -93,6 +60,39 @@ export type Database = {
             referencedColumns: ["slug"]
           },
         ]
+      }
+      industries: {
+        Row: {
+          blurb: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          blurb?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          blurb?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { industries, demos, demosFor, featuredDemos } from "@/data/demos";
+import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -139,6 +139,8 @@ const faqs = [
 ];
 
 function Index() {
+  const { industries, demos, demosFor, featuredDemos } = useSiteContent();
+
   return (
     <>
       {/* 1. Hero */}

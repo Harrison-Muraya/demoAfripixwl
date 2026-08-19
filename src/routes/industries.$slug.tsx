@@ -2,14 +2,17 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
-import { getIndustry, demosFor, type Demo } from "@/data/demos";
+import { getSiteContent } from "@/lib/content.functions";
+import { contentHelpers, type Demo } from "@/lib/site-content";
 
 export const Route = createFileRoute("/industries/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    const { getIndustry, demosFor } = contentHelpers(await getSiteContent());
     const industry = getIndustry(params.slug);
     if (!industry) throw notFound();
     return { industry, demos: demosFor(params.slug) };
   },
+
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {

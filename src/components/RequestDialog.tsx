@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, Loader2 } from "lucide-react";
-import { industries } from "@/data/demos";
+import { useSiteContent } from "@/lib/site-content";
 import { useServerFn } from "@tanstack/react-start";
 import { submitSolutionRequest } from "@/lib/solution-request.functions";
 import { toast } from "sonner";
@@ -23,6 +23,7 @@ type Props = {
 };
 
 export function RequestDialog({ children, defaultProject = "", defaultIndustry = "" }: Props) {
+  const { industries } = useSiteContent();
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);

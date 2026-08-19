@@ -3,14 +3,17 @@ import { useState } from "react";
 import { ArrowLeft, ExternalLink, Maximize2, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RequestDialog } from "@/components/RequestDialog";
-import { getDemo } from "@/data/demos";
+import { getSiteContent } from "@/lib/content.functions";
+import { contentHelpers } from "@/lib/site-content";
 
 export const Route = createFileRoute("/demo/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    const { getDemo } = contentHelpers(await getSiteContent());
     const demo = getDemo(params.slug);
     if (!demo) throw notFound();
     return { demo };
   },
+
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {

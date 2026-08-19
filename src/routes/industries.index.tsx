@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { IndustryCard } from "@/components/IndustryCard";
-import { industries, demosFor } from "@/data/demos";
+import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/industries/")({
   head: () => ({
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/industries/")({
       { property: "og:title", content: "Explore Solutions by Industry — Afripixel Demo Centre" },
       {
         property: "og:description",
-        content: `Live demonstrations across ${industries.length}+ industries, built by Afripixel Solutions.`,
+        content: "Live demonstrations across many industries, built by Afripixel Solutions.",
       },
     ],
   }),
@@ -22,6 +22,8 @@ export const Route = createFileRoute("/industries/")({
 });
 
 function IndustriesPage() {
+  const { industries, demosFor } = useSiteContent();
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="max-w-2xl">

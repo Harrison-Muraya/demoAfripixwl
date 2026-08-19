@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { industries, demos } from "@/data/demos";
+import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/demonstrations")({
   head: () => ({
@@ -26,6 +26,7 @@ export const Route = createFileRoute("/demonstrations")({
 function DemonstrationsPage() {
   const [filter, setFilter] = useState<string>("all");
   const [page, setPage] = useState(1);
+  const { industries, demos } = useSiteContent();
   const list = filter === "all" ? demos : demos.filter((d) => d.industrySlug === filter);
   const pageSize = 9;
   const totalPages = Math.max(1, Math.ceil(list.length / pageSize));

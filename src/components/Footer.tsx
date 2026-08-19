@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
-import { industries } from "@/data/demos";
+import { useSiteContent } from "@/lib/site-content";
 
 export function Footer() {
+  const { industries } = useSiteContent();
+
   return (
     <footer className="border-t border-border bg-secondary/40">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
