@@ -3,10 +3,10 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminSession } from "@/lib/use-admin-session";
-import { supabase } from "@/integrations/supabase/client";
+import { setAdminSession } from "@/lib/auth-client";
 
 // Wrap any /admin/* page (except login/setup) with this. Redirects to
-// /admin/login if there's no active Supabase session.
+// /admin/login if there's no active admin session.
 export function AdminShell({ children }: { children: ReactNode }) {
   const { loading, isAuthenticated } = useAdminSession();
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             variant="ghost"
             size="sm"
             onClick={async () => {
-              await supabase.auth.signOut();
+              setAdminSession(null);
               navigate({ to: "/admin/login" });
             }}
           >

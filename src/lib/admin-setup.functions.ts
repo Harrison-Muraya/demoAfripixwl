@@ -8,9 +8,9 @@ const setupSchema = z.object({
   adminPassword: z.string().min(8).max(200),
 });
 
-// One-time setup: seeds the industries/demos tables from the static data
-// this project used to run on, and creates the single admin account. Safe
-// to call more than once — it only inserts data/creates the user if they
+// One-time setup: creates MySQL tables if needed, seeds industries/demos from
+// the static data this project used to run on, and creates the admin account.
+// Safe to call more than once — it only inserts data/creates the user if they
 // don't already exist. Gated by ADMIN_SETUP_SECRET so it isn't a public
 // "create any account" endpoint; there is no self-serve admin sign-up.
 export const runAdminSetup = createServerFn({ method: "POST" })
@@ -26,7 +26,8 @@ export const runAdminSetup = createServerFn({ method: "POST" })
       throw new Error("Incorrect setup secret.");
     }
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { exec, getPool, mysqlErrorMessage, query, queryOne } = await import("@/lib/db.server");
+    const { hashPassword } = await import("@/lib/auth.server");
 
     const results = {
       industriesInserted: 0,
@@ -35,56 +36,66 @@ export const runAdminSetup = createServerFn({ method: "POST" })
       adminUserAlreadyExisted: false,
     };
 
-    const { count: industryCount, error: countError } = await supabaseAdmin
-      .from("industries")
-      .select("*", { count: "exact", head: true });
-    if (countError) throw new Error(`Could not read industries table: ${countError.message}`);
+    try {
+      await getPool();
 
-    if (!industryCount) {
-      const { error: industriesError } = await supabaseAdmin.from("industries").insert(
-        staticIndustries.map((industry, index) => ({
-          slug: industry.slug,
-          name: industry.name,
-          description: industry.description,
-          blurb: industry.blurb,
-          sort_order: index,
-        })),
+      const industryCountRows = await query<{ count: number }>(
+        "SELECT COUNT(*) AS count FROM industries",
       );
-      if (industriesError) throw new Error(`Could not seed industries: ${industriesError.message}`);
-      results.industriesInserted = staticIndustries.length;
+      const industryCount = Number(industryCountRows[0]?.count ?? 0);
 
-      const { error: demosError } = await supabaseAdmin.from("demos").insert(
-        staticDemos.map((demo, index) => ({
-          slug: demo.slug,
-          name: demo.name,
-          industry_slug: demo.industrySlug,
-          description: demo.description,
-          demo_url: demo.demoUrl,
-          featured: featuredSlugs.includes(demo.slug),
-          sort_order: index,
-        })),
+      if (!industryCount) {
+        for (const [index, industry] of staticIndustries.entries()) {
+          await exec(
+            "INSERT INTO industries (id, slug, name, description, blurb, sort_order) VALUES (?, ?, ?, ?, ?, ?)",
+            [
+              crypto.randomUUID(),
+              industry.slug,
+              industry.name,
+              industry.description,
+              industry.blurb,
+              index,
+            ],
+          );
+        }
+        results.industriesInserted = staticIndustries.length;
+
+        for (const [index, demo] of staticDemos.entries()) {
+          await exec(
+            "INSERT INTO demos (id, slug, name, industry_slug, description, demo_url, featured, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+              crypto.randomUUID(),
+              demo.slug,
+              demo.name,
+              demo.industrySlug,
+              demo.description,
+              demo.demoUrl,
+              featuredSlugs.includes(demo.slug) ? 1 : 0,
+              index,
+            ],
+          );
+        }
+        results.demosInserted = staticDemos.length;
+      }
+
+      const email = data.adminEmail.trim().toLowerCase();
+      const existing = await queryOne<{ id: string }>(
+        "SELECT id FROM admin_users WHERE email = ? LIMIT 1",
+        [email],
       );
-      if (demosError) throw new Error(`Could not seed demos: ${demosError.message}`);
-      results.demosInserted = staticDemos.length;
-    }
 
-    const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
-    if (listError) throw new Error(`Could not check existing admin users: ${listError.message}`);
-
-    const alreadyExists = existingUsers.users.some(
-      (u) => u.email?.toLowerCase() === data.adminEmail.toLowerCase(),
-    );
-
-    if (alreadyExists) {
-      results.adminUserAlreadyExisted = true;
-    } else {
-      const { error: createError } = await supabaseAdmin.auth.admin.createUser({
-        email: data.adminEmail,
-        password: data.adminPassword,
-        email_confirm: true,
-      });
-      if (createError) throw new Error(`Could not create admin user: ${createError.message}`);
-      results.adminUserCreated = true;
+      if (existing) {
+        results.adminUserAlreadyExisted = true;
+      } else {
+        await exec("INSERT INTO admin_users (id, email, password_hash) VALUES (?, ?, ?)", [
+          crypto.randomUUID(),
+          email,
+          await hashPassword(data.adminPassword),
+        ]);
+        results.adminUserCreated = true;
+      }
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
     }
 
     return results;

@@ -1,16 +1,20 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAuth } from "@/lib/auth-middleware";
+import type { DemoRow } from "@/lib/db-types";
 
 export const listDemosAdmin = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("demos")
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) throw new Error(error.message);
-    return data;
+  .middleware([requireAuth])
+  .handler(async (): Promise<DemoRow[]> => {
+    const { mapDemo, mysqlErrorMessage, query } = await import("@/lib/db.server");
+    try {
+      const rows = await query<Parameters<typeof mapDemo>[0]>(
+        "SELECT id, slug, name, industry_slug, description, demo_url, featured, sort_order, created_at, updated_at FROM demos ORDER BY sort_order ASC, name ASC",
+      );
+      return rows.map(mapDemo);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const demoWriteSchema = z.object({
@@ -29,16 +33,34 @@ const demoWriteSchema = z.object({
 });
 
 export const createDemo = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => demoWriteSchema.parse(data))
-  .handler(async ({ data, context }) => {
-    const { data: row, error } = await context.supabase
-      .from("demos")
-      .insert(data)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return row;
+  .handler(async ({ data }): Promise<DemoRow> => {
+    const { mapDemo, mysqlErrorMessage, exec, queryOne } = await import("@/lib/db.server");
+    const id = crypto.randomUUID();
+    try {
+      await exec(
+        "INSERT INTO demos (id, slug, name, industry_slug, description, demo_url, featured, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          id,
+          data.slug,
+          data.name,
+          data.industry_slug,
+          data.description,
+          data.demo_url,
+          data.featured ? 1 : 0,
+          data.sort_order,
+        ],
+      );
+      const row = await queryOne<Parameters<typeof mapDemo>[0]>(
+        "SELECT id, slug, name, industry_slug, description, demo_url, featured, sort_order, created_at, updated_at FROM demos WHERE id = ?",
+        [id],
+      );
+      if (!row) throw new Error("Demo was created but could not be loaded.");
+      return mapDemo(row);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const demoUpdateSchema = demoWriteSchema.extend({
@@ -46,27 +68,47 @@ const demoUpdateSchema = demoWriteSchema.extend({
 });
 
 export const updateDemo = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => demoUpdateSchema.parse(data))
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }): Promise<DemoRow> => {
+    const { mapDemo, mysqlErrorMessage, exec, queryOne } = await import("@/lib/db.server");
     const { id, ...fields } = data;
-    const { data: row, error } = await context.supabase
-      .from("demos")
-      .update(fields)
-      .eq("id", id)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return row;
+    try {
+      await exec(
+        "UPDATE demos SET slug = ?, name = ?, industry_slug = ?, description = ?, demo_url = ?, featured = ?, sort_order = ? WHERE id = ?",
+        [
+          fields.slug,
+          fields.name,
+          fields.industry_slug,
+          fields.description,
+          fields.demo_url,
+          fields.featured ? 1 : 0,
+          fields.sort_order,
+          id,
+        ],
+      );
+      const row = await queryOne<Parameters<typeof mapDemo>[0]>(
+        "SELECT id, slug, name, industry_slug, description, demo_url, featured, sort_order, created_at, updated_at FROM demos WHERE id = ?",
+        [id],
+      );
+      if (!row) throw new Error("Demo not found.");
+      return mapDemo(row);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const deleteSchema = z.object({ id: z.string().uuid() });
 
 export const deleteDemo = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => deleteSchema.parse(data))
-  .handler(async ({ data, context }) => {
-    const { error } = await context.supabase.from("demos").delete().eq("id", data.id);
-    if (error) throw new Error(error.message);
-    return { ok: true };
+  .handler(async ({ data }) => {
+    const { exec, mysqlErrorMessage } = await import("@/lib/db.server");
+    try {
+      await exec("DELETE FROM demos WHERE id = ?", [data.id]);
+      return { ok: true as const };
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });

@@ -39,7 +39,7 @@ import {
   updateIndustry,
   deleteIndustry,
 } from "@/lib/admin-industries.functions";
-import type { Tables } from "@/integrations/supabase/types";
+import type { IndustryRow } from "@/lib/db-types";
 
 export const Route = createFileRoute("/admin/industries")({
   head: () => ({
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/admin/industries")({
   component: AdminIndustries,
 });
 
-type Industry = Tables<"industries">;
+type Industry = IndustryRow;
 
 function AdminIndustries() {
   return (

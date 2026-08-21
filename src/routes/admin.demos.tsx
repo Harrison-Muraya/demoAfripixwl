@@ -43,7 +43,7 @@ import {
 import { toast } from "sonner";
 import { listDemosAdmin, createDemo, updateDemo, deleteDemo } from "@/lib/admin-demos.functions";
 import { listIndustriesAdmin } from "@/lib/admin-industries.functions";
-import type { Tables } from "@/integrations/supabase/types";
+import type { DemoRow, IndustryRow } from "@/lib/db-types";
 
 export const Route = createFileRoute("/admin/demos")({
   head: () => ({
@@ -52,8 +52,8 @@ export const Route = createFileRoute("/admin/demos")({
   component: AdminDemos,
 });
 
-type Demo = Tables<"demos">;
-type Industry = Tables<"industries">;
+type Demo = DemoRow;
+type Industry = IndustryRow;
 
 function AdminDemos() {
   return (

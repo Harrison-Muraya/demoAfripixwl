@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useSiteContent } from "@/lib/site-content";
-import { useServerFn } from "@tanstack/react-start";
 import { submitSolutionRequest } from "@/lib/solution-request.functions";
 import { toast } from "sonner";
 
@@ -27,7 +26,6 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const send = useServerFn(submitSolutionRequest);
 
   return (
     <Dialog
@@ -68,7 +66,7 @@ export function RequestDialog({ children, defaultProject = "", defaultIndustry =
                 const get = (k: string) => String(fd.get(k) ?? "").trim();
                 setSubmitting(true);
                 try {
-                  await send({
+                  await submitSolutionRequest({
                     data: {
                       name: get("name"),
                       business: get("business"),

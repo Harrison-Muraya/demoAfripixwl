@@ -1,16 +1,20 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAuth } from "@/lib/auth-middleware";
+import type { IndustryRow } from "@/lib/db-types";
 
 export const listIndustriesAdmin = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("industries")
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) throw new Error(error.message);
-    return data;
+  .middleware([requireAuth])
+  .handler(async (): Promise<IndustryRow[]> => {
+    const { mapIndustry, mysqlErrorMessage, query } = await import("@/lib/db.server");
+    try {
+      const rows = await query<Parameters<typeof mapIndustry>[0]>(
+        "SELECT id, slug, name, description, blurb, sort_order, created_at, updated_at FROM industries ORDER BY sort_order ASC, name ASC",
+      );
+      return rows.map(mapIndustry);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const industryWriteSchema = z.object({
@@ -27,16 +31,25 @@ const industryWriteSchema = z.object({
 });
 
 export const createIndustry = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => industryWriteSchema.parse(data))
-  .handler(async ({ data, context }) => {
-    const { data: row, error } = await context.supabase
-      .from("industries")
-      .insert(data)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return row;
+  .handler(async ({ data }): Promise<IndustryRow> => {
+    const { mapIndustry, mysqlErrorMessage, exec, queryOne } = await import("@/lib/db.server");
+    const id = crypto.randomUUID();
+    try {
+      await exec(
+        "INSERT INTO industries (id, slug, name, description, blurb, sort_order) VALUES (?, ?, ?, ?, ?, ?)",
+        [id, data.slug, data.name, data.description, data.blurb, data.sort_order],
+      );
+      const row = await queryOne<Parameters<typeof mapIndustry>[0]>(
+        "SELECT id, slug, name, description, blurb, sort_order, created_at, updated_at FROM industries WHERE id = ?",
+        [id],
+      );
+      if (!row) throw new Error("Industry was created but could not be loaded.");
+      return mapIndustry(row);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const industryUpdateSchema = industryWriteSchema.extend({
@@ -44,27 +57,38 @@ const industryUpdateSchema = industryWriteSchema.extend({
 });
 
 export const updateIndustry = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => industryUpdateSchema.parse(data))
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }): Promise<IndustryRow> => {
+    const { mapIndustry, mysqlErrorMessage, exec, queryOne } = await import("@/lib/db.server");
     const { id, ...fields } = data;
-    const { data: row, error } = await context.supabase
-      .from("industries")
-      .update(fields)
-      .eq("id", id)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return row;
+    try {
+      await exec(
+        "UPDATE industries SET slug = ?, name = ?, description = ?, blurb = ?, sort_order = ? WHERE id = ?",
+        [fields.slug, fields.name, fields.description, fields.blurb, fields.sort_order, id],
+      );
+      const row = await queryOne<Parameters<typeof mapIndustry>[0]>(
+        "SELECT id, slug, name, description, blurb, sort_order, created_at, updated_at FROM industries WHERE id = ?",
+        [id],
+      );
+      if (!row) throw new Error("Industry not found.");
+      return mapIndustry(row);
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });
 
 const deleteSchema = z.object({ id: z.string().uuid() });
 
 export const deleteIndustry = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAuth])
   .inputValidator((data: unknown) => deleteSchema.parse(data))
-  .handler(async ({ data, context }) => {
-    const { error } = await context.supabase.from("industries").delete().eq("id", data.id);
-    if (error) throw new Error(error.message);
-    return { ok: true };
+  .handler(async ({ data }) => {
+    const { exec, mysqlErrorMessage } = await import("@/lib/db.server");
+    try {
+      await exec("DELETE FROM industries WHERE id = ?", [data.id]);
+      return { ok: true as const };
+    } catch (error) {
+      throw new Error(mysqlErrorMessage(error));
+    }
   });

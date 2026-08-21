@@ -4,7 +4,9 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { loginAdmin } from "@/lib/auth.functions";
+import { setAdminSession } from "@/lib/auth-client";
 
 export const Route = createFileRoute("/admin/login")({
   head: () => ({
@@ -15,6 +17,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function AdminLogin() {
   const navigate = useNavigate();
+  const login = useServerFn(loginAdmin);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,16 +38,15 @@ function AdminLogin() {
           const email = String(fd.get("email") ?? "").trim();
           const password = String(fd.get("password") ?? "");
           setSubmitting(true);
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          setSubmitting(false);
-          if (signInError) {
-            setError(signInError.message);
-            return;
+          try {
+            const session = await login({ data: { email, password } });
+            setAdminSession(session);
+            navigate({ to: "/admin" });
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Could not sign in.");
+          } finally {
+            setSubmitting(false);
           }
-          navigate({ to: "/admin" });
         }}
       >
         <div className="grid gap-2">

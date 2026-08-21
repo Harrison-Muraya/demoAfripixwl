@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { getAdminSession, type AdminSession } from "@/lib/auth-client";
 
 export function useAdminSession() {
-  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const [session, setSession] = useState<AdminSession | null | undefined>(undefined);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-    return () => sub.subscription.unsubscribe();
+    const sync = () => setSession(getAdminSession());
+    sync();
+    window.addEventListener("admin-session-change", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("admin-session-change", sync);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
 
   return {
     session,
-    // undefined = still checking, null = confirmed logged out
     loading: session === undefined,
     isAuthenticated: Boolean(session),
   };
