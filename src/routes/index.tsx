@@ -189,8 +189,8 @@ function Index() {
           </div>
 
           <BrowserFrame
-            url="powel.afripixelprojects.com"
-            src="https://powel.afripixelprojects.com"
+            url="https://averis.afripixelprojects.com"
+            src="https://averis.afripixelprojects.com"
             title="Powel-elss Enterprises website preview"
             height="26rem"
             footer={

@@ -35,7 +35,7 @@ const steps = [
   },
   {
     no: "03",
-    title: "Build Yours",
+    title: "Get Your Own",
     body: "Request a similar solution customized for your business.",
   },
 ];
