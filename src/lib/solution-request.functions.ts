@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const requestSchema = z.object({
+export const solutionRequestSchema = z.object({
   name: z.string().trim().min(1).max(120),
   business: z.string().trim().max(160).optional().default(""),
   businessDescription: z.string().trim().max(2000).optional().default(""),
@@ -13,7 +13,7 @@ const requestSchema = z.object({
 });
 
 export const submitSolutionRequest = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => requestSchema.parse(data))
+  .inputValidator((data: unknown) => solutionRequestSchema.parse(data))
   .handler(async ({ data }) => {
     const { sendSolutionRequestEmail } = await import("@/lib/solution-request-email.server");
     await sendSolutionRequestEmail(data, data.email);

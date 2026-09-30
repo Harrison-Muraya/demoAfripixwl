@@ -17,7 +17,7 @@ export const listIndustriesAdmin = createServerFn({ method: "GET" })
     }
   });
 
-const industryWriteSchema = z.object({
+export const industryWriteSchema = z.object({
   slug: z
     .string()
     .trim()

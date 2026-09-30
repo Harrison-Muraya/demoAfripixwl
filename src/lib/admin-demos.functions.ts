@@ -17,7 +17,7 @@ export const listDemosAdmin = createServerFn({ method: "GET" })
     }
   });
 
-const demoWriteSchema = z.object({
+export const demoWriteSchema = z.object({
   slug: z
     .string()
     .trim()
